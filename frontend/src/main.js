@@ -12,7 +12,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
+app.use(createPinia());
+app.use(router);
 
-app.mount('#app')
+app.mount('#app');

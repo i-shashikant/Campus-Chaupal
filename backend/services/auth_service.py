@@ -161,7 +161,8 @@ class AuthService:
         access_token = create_access_token(
             identity=str(user.id),
             additional_claims={
-                "role": user.role
+                "role": user.role,
+                "email":user.email
             }
         )
 
@@ -169,7 +170,11 @@ class AuthService:
             "Login successful.",
             {
                 "access_token": access_token,
-                "role": user.role,
-                "user_id": user.id
+
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "role": user.role
+                }
             }
-        )
+)
