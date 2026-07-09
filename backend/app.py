@@ -3,6 +3,7 @@ from flask_cors import CORS
 from config import Config
 from extensions import db, jwt, migrate
 from models import User, Student, Company 
+from api.auth import auth_bp
 
 
 def create_app():
