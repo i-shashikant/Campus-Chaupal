@@ -3,7 +3,7 @@ from extensions import db
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
-from util.enums import Role, UserStatus
+from utils.enums import Role, UserStatus
 
 class User(db.Model):
     __tablename__ = "users"
