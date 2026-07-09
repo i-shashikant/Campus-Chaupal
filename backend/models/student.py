@@ -22,6 +22,6 @@ class Student(db.Model):
     skills = db.Column(db.Text)
     status = db.Column(db.String(20), default=StudentStatus.ACTIVE.value)
     profile_completed = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime)
+    updated_at = db.Column(db.DateTime, default=datetime, onupdate=datetime)
     user = db.relationship("User", back_populates="student")

@@ -1,5 +1,5 @@
 from extensions import db
-from datetime import datetime, utcnow
+from datetime import datetime
 from utils.enums import CompanyStatus
 
 
@@ -27,7 +27,7 @@ class Company(db.Model):
     profile_completed = db.Column(db.Boolean, default=False)
     verified = db.Column(db.Boolean, default=False)
     reason = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime)
+    updated_at = db.Column(db.DateTime, default=datetime, onupdate=datetime)
     user = db.relationship("User", back_populates="company")
     jobs = db.relationship("Job", back_populates="company", cascade="all, delete-orphan")
