@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from config import Config
 from extensions import db, jwt, migrate
-from models import User, Student, Company
+from models import User, Student, Company 
 
 
 def create_app():
