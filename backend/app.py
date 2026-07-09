@@ -3,12 +3,14 @@ from flask_cors import CORS
 from config import Config
 from extensions import db, jwt, migrate
 from models import User, Student, Company 
+from extensions import db, jwt, migrate
 from api.auth import auth_bp
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    app.register_blueprint(auth_bp)
 
     CORS(app)
 

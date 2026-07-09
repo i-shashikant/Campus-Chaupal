@@ -1,0 +1,19 @@
+body{
+
+    background:#f5f7fb;
+
+    font-family:Segoe UI, sans-serif;
+
+    margin:0;
+}
+
+.auth-layout{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
