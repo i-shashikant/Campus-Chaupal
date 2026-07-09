@@ -2,7 +2,7 @@
 
 <AuthLayout>
 
-    <h1>Login</h1>
+    <LoginForm />
 
 </AuthLayout>
 
@@ -10,6 +10,7 @@
 
 <script setup>
 
-import AuthLayout from '../../layouts/AuthLayout.vue'
+import AuthLayout from "@/layouts/AuthLayout.vue"
+import LoginForm from "@/components/auth/LoginForm.vue"
 
 </script>

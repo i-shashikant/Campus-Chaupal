@@ -1,7 +1,38 @@
 .auth-wrapper{
+    min-height:100vh;
+    background:
+        linear-gradient(
+            135deg,
+            #eef5ff,
+            #dbeafe,
+            #f8fafc
+        );
+    position:relative;
+    overflow:hidden;
+}
 
-    background:#f8fafc;
+.auth-wrapper::before{
+    content:"";
+    position:absolute;
+    width:450px;
+    height:450px;
+    border-radius:50%;
+    background:rgba(37,99,235,.15);
+    top:-120px;
+    left:-120px;
+    filter:blur(20px);
+}
 
+.auth-wrapper::after{
+    content:"";
+    position:absolute;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    background:rgba(59,130,246,.12);
+    bottom:-80px;
+    right:-80px;
+    filter:blur(30px);
 }
 
 .auth-left{
@@ -9,36 +40,44 @@
     background:
         linear-gradient(
             135deg,
-            #2563eb,
-            #1d4ed8
+            rgba(37,99,235,.88),
+            rgba(29,78,216,.82)
         );
 
+    backdrop-filter:blur(25px);
     color:white;
 
     display:flex;
-
+    justify-content:center;
     align-items:center;
 
-    justify-content:center;
-
+    position:relative;
 }
 
 .hero{
 
     width:70%;
+    z-index:10;
 
 }
 
 .hero h1{
 
-    font-size:54px;
+    font-size:58px;
     font-weight:700;
+
+}
+
+.hero p{
+
+    font-size:18px;
+    opacity:.92;
 
 }
 
 .feature{
 
-    margin:20px 0;
+    margin:22px 0;
     font-size:18px;
 
 }
@@ -46,5 +85,6 @@
 .feature i{
 
     margin-right:10px;
+    font-size:20px;
 
 }
