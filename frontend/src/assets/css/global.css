@@ -1,0 +1,25 @@
+@import "./variables.css";
+
+body{
+
+    background:#f4f7fb;
+    font-family:
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
+    color:var(--gray-800);
+
+}
+
+a{
+    text-decoration:none;
+}
+
+.card-modern{
+
+    border:none;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+
+}

@@ -1,0 +1,50 @@
+.auth-wrapper{
+
+    background:#f8fafc;
+
+}
+
+.auth-left{
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.hero{
+
+    width:70%;
+
+}
+
+.hero h1{
+
+    font-size:54px;
+    font-weight:700;
+
+}
+
+.feature{
+
+    margin:20px 0;
+    font-size:18px;
+
+}
+
+.feature i{
+
+    margin-right:10px;
+
+}
