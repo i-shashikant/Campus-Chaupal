@@ -17,7 +17,7 @@ class AuthService:
         email = data.get("email", "").strip().lower()
         password = data.get("password", "")
 
-        required_fields = ["full_name", "roll_number", "branch", "year"]
+        required_fields = ["email", "password"]
 
         for field in required_fields:
             if not data.get(field):
@@ -34,10 +34,6 @@ class AuthService:
         if User.query.filter_by(email=email).first():
             return error_response("Email already exists.")
 
-        if Student.query.filter_by(
-            roll_number=data.get("roll_number")
-        ).first():
-            return error_response("Roll number already exists.")
 
         try:
 
@@ -49,15 +45,6 @@ class AuthService:
             student = Student(
                 student_code=generate_student_code(),
                 user_id=user.id,
-                full_name=data.get("full_name").strip(),
-                roll_number=data.get("roll_number").strip(),
-                branch=data.get("branch").strip(),
-                year=data.get("year"),
-                cgpa=data.get("cgpa"),
-                graduation_year=data.get("graduation_year"),
-                gender=data.get("gender"),
-                phone=data.get("phone"),
-                address=data.get("address")
             )
 
             db.session.add(student)
@@ -77,7 +64,7 @@ class AuthService:
         email = data.get("email", "").strip().lower()
         password = data.get("password", "")
 
-        required_fields = ["company_name", "industry", "hr_name"]
+        required_fields = ["email", "password"]
 
         for field in required_fields:
             if not data.get(field):
@@ -104,18 +91,6 @@ class AuthService:
             company = Company(
                 company_code=generate_company_code(),
                 user_id=user.id,
-                company_name=data.get("company_name"),
-                industry=data.get("industry"),
-                website=data.get("website"),
-                description=data.get("description"),
-                address=data.get("address"),
-                city=data.get("city"),
-                state=data.get("state"),
-                country=data.get("country"),
-                logo=data.get("logo"),
-                hr_name=data.get("hr_name"),
-                hr_email=data.get("hr_email"),
-                phone=data.get("phone")
             )
 
             db.session.add(company)
