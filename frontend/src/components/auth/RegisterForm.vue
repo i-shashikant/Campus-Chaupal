@@ -13,19 +13,23 @@
     <div class="btn-group w-100 mb-4">
 
         <button
+            type="button"
             class="btn"
             :class="registerStore.role=='student'
                 ? 'btn-primary'
                 : 'btn-outline-primary'"
+                @click="registerStore.role='student'"
         >
             Student
         </button>
 
         <button
+            type="button"
             class="btn"
             :class="registerStore.role=='company'
                 ? 'btn-primary'
                 : 'btn-outline-primary'"
+                @click="registerStore.role='company'"
         >
             Company
         </button>
@@ -51,8 +55,7 @@ import { useRegisterStore } from "@/stores/register";
 import StudentRegisterForm from "./StudentRegisterForm.vue";
 import CompanyRegisterForm from "./CompanyRegisterForm.vue";
 
-// const registerStore = useRegisterStore();
-// const registerStore = useRegisterStore();
+const registerStore = useRegisterStore();
 
 </script>
 

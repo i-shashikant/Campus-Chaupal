@@ -112,6 +112,37 @@
 import { useRegisterStore } from "@/stores/register";
 
 const registerStore = useRegisterStore();
+
+import authService from "@/services/authService";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const registerStudent = async () => {
+
+    try {
+
+        await authService.registerStudent(
+            registerStore.student
+        );
+
+        alert("Registration Successful!");
+
+        registerStore.reset();
+
+        router.push("/login");
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.response?.data?.message ||
+            "Registration Failed"
+        );
+
+    }
+
+};
 </script>
 
 form {
