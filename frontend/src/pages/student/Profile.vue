@@ -2,21 +2,63 @@
 
 <DashboardLayout>
 
-    <div class="container-fluid">
+<div class="container-fluid">
 
-        <h2 class="mb-4">
+    <h2 class="fw-bold mb-4">
 
-            My Profile
+        My Profile
 
-        </h2>
+    </h2>
 
-        <ProfileCard/>
+    <!-- Personal -->
 
-        <AcademicCard/>
+    <div class="card profile-sm mb-4">
 
-        <ProfessionalCard/>
+        <div class="profile-header">
+
+            Personal Information
+
+        </div>
+
+        <div class="profile-body">
+
+        </div>
 
     </div>
+
+    <!-- Academic -->
+
+    <div class="card profile-sm mb-4">
+
+        <div class="profile-header">
+
+            Academic Information
+
+        </div>
+
+        <div class="profile-body">
+
+        </div>
+
+    </div>
+
+    <!-- Professional -->
+
+    <div class="card profile-sm">
+
+        <div class="profile-header">
+
+            Professional Information
+
+        </div>
+
+        <div class="profile-body">
+
+        </div>
+
+    </div>
+
+</div>
 
 </DashboardLayout>
 
@@ -26,11 +68,8 @@
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
-import ProfileCard from "@/components/student/ProfileCard.vue";
-
-import AcademicCard from "@/components/student/AcademicCard.vue";
-
-import ProfessionalCard from "@/components/student/ProfessionalCard.vue";
-
 </script>
 
+<style scoped>
+@import "@/assets/css/profile.css";
+</style>

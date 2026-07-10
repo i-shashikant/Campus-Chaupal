@@ -22,6 +22,11 @@ const routes = [
     {
         path: "/student/dashboard",
         component: () => import("@/pages/student/Dashboard.vue")
+    },
+
+    {
+        path: "/student/profile",
+        component: () => import("@/pages/student/Profile.vue")
     }
 ]
 
