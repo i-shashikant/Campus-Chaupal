@@ -97,3 +97,11 @@ defineEmits([
 ]);
 
 </script>
+
+.router-link-active{
+
+    background:#2563eb;
+
+    border-radius:10px;
+
+}

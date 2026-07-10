@@ -14,11 +14,23 @@
 
     </template>
 
-    <h2>
+    <div class="mb-4">
 
-        Welcome Back 👋
+        <h2>
 
-    </h2>
+            Welcome Back 👋
+
+        </h2>
+
+        <p class="text-muted">
+
+            Ready to kickstart your career today?
+
+        </p>
+
+    </div>
+
+<ProfileCompletionCard/>
 
     <ProfileCompletionCard />
 
