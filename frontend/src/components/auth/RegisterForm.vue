@@ -51,10 +51,9 @@ import { useRegisterStore } from "@/stores/register";
 import StudentRegisterForm from "./StudentRegisterForm.vue";
 import CompanyRegisterForm from "./CompanyRegisterForm.vue";
 
-const registerStore = useRegisterStore();
+// const registerStore = useRegisterStore();
+// const registerStore = useRegisterStore();
 
-
-const registerStore = useRegisterStore();
 </script>
 
 <style scoped>
