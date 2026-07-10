@@ -14,28 +14,30 @@
 
         <button
             class="btn"
-            :class="role=='student'
+            :class="registerStore.role=='student'
                 ? 'btn-primary'
                 : 'btn-outline-primary'"
-            @click="role='student'"
         >
             Student
         </button>
 
         <button
             class="btn"
-            :class="role=='company'
+            :class="registerStore.role=='company'
                 ? 'btn-primary'
                 : 'btn-outline-primary'"
-            @click="role='company'"
         >
             Company
         </button>
 
     </div>
 
-    <RegisterStepper
-        :role="role"
+    <StudentRegisterForm
+    v-if="registerStore.role === 'student'"
+    />
+
+    <CompanyRegisterForm
+        v-else
     />
 
 </div>
@@ -43,10 +45,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import RegisterStepper from "./RegisterStepper.vue";
 
-const role = ref("student");
+import { useRegisterStore } from "@/stores/register";
+
+import StudentRegisterForm from "./StudentRegisterForm.vue";
+import CompanyRegisterForm from "./CompanyRegisterForm.vue";
+
+const registerStore = useRegisterStore();
+
+
+const registerStore = useRegisterStore();
 </script>
 
 <style scoped>
