@@ -31,3 +31,38 @@
     padding:25px;
 
 }
+
+.form-label{
+
+    font-weight:500;
+
+}
+
+.form-control,
+.form-select{
+
+    border-radius:12px;
+
+    min-height:45px;
+
+}
+
+textarea.form-control{
+
+    min-height:120px;
+
+}
+
+.profile-card .form-control,
+.profile-card .form-select{
+
+    border-radius:12px;
+
+}
+
+.profile-card .form-control:focus,
+.profile-card .form-select:focus{
+
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.15);
+
+}
