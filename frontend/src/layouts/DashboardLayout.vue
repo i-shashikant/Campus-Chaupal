@@ -1,22 +1,19 @@
 <template>
 
-<div class="container-fluid">
+<div class="d-flex">
 
-    <div class="row">
+    <Sidebar
+        :collapsed="collapsed"
+        @toggle="collapsed=!collapsed"
+    />
 
-        <div class="col-md-2 bg-dark text-white min-vh-100 p-3">
+    <div class="flex-grow-1">
 
-            <h4>CampusChaupal</h4>
+        <TopNavbar/>
 
-            <hr>
+        <div class="p-4">
 
-            <slot name="sidebar" />
-
-        </div>
-
-        <div class="col-md-10 p-4">
-
-            <slot />
+            <slot/>
 
         </div>
 
@@ -25,3 +22,20 @@
 </div>
 
 </template>
+
+<script setup>
+
+import { ref } from "vue";
+import Sidebar from "@/components/layout/Sidebar.vue";
+import TopNavbar from "@/components/layout/TopNavbar.vue";
+
+const collapsed = ref(false);
+
+</script>
+
+<style scoped>
+
+
+@import "@/assets/css/dashboard.css";
+
+</style>
