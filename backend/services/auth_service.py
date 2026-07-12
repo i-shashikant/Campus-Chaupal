@@ -6,6 +6,7 @@ from utils.enums import Role
 from utils.helper import (generate_student_code, generate_company_code)
 from utils.response import (success_response, error_response)
 from utils.validators import (validate_email, validate_password)
+import traceback
 
 
 
@@ -56,6 +57,7 @@ class AuthService:
 
         except Exception as e:
             db.session.rollback()
+            traceback.print_exc()
             return error_response(str(e), status_code=500)
 
     @staticmethod
