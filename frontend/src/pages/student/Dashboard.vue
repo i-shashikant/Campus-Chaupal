@@ -30,7 +30,7 @@
 
     </div>
 
-<ProfileCompletionCard/>
+
 
     <ProfileCompletionCard />
 

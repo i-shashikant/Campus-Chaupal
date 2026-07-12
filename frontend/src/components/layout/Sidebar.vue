@@ -98,6 +98,7 @@ defineEmits([
 
 </script>
 
+<style scoped>
 .router-link-active{
 
     background:#2563eb;
@@ -105,3 +106,4 @@ defineEmits([
     border-radius:10px;
 
 }
+</style>
