@@ -30,4 +30,4 @@ class Company(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     user = db.relationship("User", back_populates="company")
-    # jobs = db.relationship("Job", back_populates="company", cascade="all, delete-orphan")
+    jobs = db.relationship("Job", back_populates="company", cascade="all, delete-orphan")
