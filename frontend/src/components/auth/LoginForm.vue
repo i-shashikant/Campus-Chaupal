@@ -15,7 +15,7 @@ const handleLogin = async () => {
     try {
         const response = await authStore.login(form);
 
-        switch (response.user.role) {
+        switch (user.role) {
             case "student":
                 router.push("/student/dashboard");
                 break;
@@ -49,7 +49,7 @@ const handleLogin = async () => {
         Login to your CampusChaupal account
     </p>
 
-    <form>
+    <form @submit.prevent="handleLogin">
 
         <div class="mb-3">
 

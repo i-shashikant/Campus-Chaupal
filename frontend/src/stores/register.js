@@ -11,18 +11,6 @@ export const useRegisterStore = defineStore("register", {
             email: "",
             password: "",
 
-            full_name: "",
-            roll_number: "",
-            branch: "",
-            year: "",
-
-            cgpa: "",
-            graduation_year: "",
-
-            gender: "",
-            phone: "",
-            address: ""
-
         },
 
         company: {

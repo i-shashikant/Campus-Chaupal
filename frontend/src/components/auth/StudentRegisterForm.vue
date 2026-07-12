@@ -1,5 +1,5 @@
 <template>
-<form>
+<form @submit.prevent="registerStudent">
     <h5 class="mb-3">Account Information</h5>
     <div class="row">
 
@@ -72,9 +72,11 @@ const registerStudent = async () => {
 };
 </script>
 
+<style scoped>
 form {
     max-height: 60vh;
     overflow-y: auto;
     padding-right: 6px;
 }
 
+</style>

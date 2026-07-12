@@ -169,7 +169,7 @@
 
     <div class="text-end mt-4">
 
-        <button class="btn btn-primary px-5">
+        <button class="btn btn-primary px-5" @click="profileStore.saveProfile()">
 
             Save Changes
 
@@ -189,6 +189,16 @@ import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useStudentProfileStore } from "@/stores/studentProfile";
 
 const profileStore = useStudentProfileStore();
+import { onMounted } from "vue";
+import { useStudentProfileStore } from "@/stores/studentProfile";
+
+const profileStore = useStudentProfileStore();
+
+onMounted(() => {
+
+    profileStore.loadProfile();
+
+});
 
 </script>
 

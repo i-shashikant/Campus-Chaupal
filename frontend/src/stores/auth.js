@@ -14,14 +14,17 @@ export const useAuthStore = defineStore("auth", {
             this.error = null;
 
             try {
-                const response = await authService.login(credentials);
+                const data = resoponse.data.data;
 
                 localStorage.setItem(
                     "access_token",
-                    response.data.access_token
+                    data.access_token
                 );
 
-                this.user = response.data.user;
+                this.user = {
+                    id: data.user_id,
+                    role: data.role
+                };
 
                 return response.data;
             } catch (err) {

@@ -5,12 +5,14 @@ from extensions import db, jwt, migrate
 from models import User, Student, Company 
 from extensions import db, jwt, migrate
 from api.auth import auth_bp
+from api.student.routes import student_bp
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(student_bp)
 
     CORS(app)
 

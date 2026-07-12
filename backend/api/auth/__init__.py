@@ -1,5 +1,4 @@
 from flask import Blueprint
-# from . import routes
 
 auth_bp = Blueprint(
     "auth",
@@ -7,3 +6,4 @@ auth_bp = Blueprint(
     url_prefix="/api/auth"
 )
 
+from . import routes

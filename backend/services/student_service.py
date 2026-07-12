@@ -1,0 +1,64 @@
+from extensions import db
+from models import User, Student
+from utils.response import success_response, error_response
+
+
+class StudentService:
+
+    @staticmethod
+    def get_profile(user_id):
+
+        student = Student.query.filter_by(user_id=user_id).first()
+
+        if not student:
+            return error_response("Student not found.", 404)
+
+        return success_response(
+            "Profile fetched successfully.",
+            {
+                "student_code": student.student_code,
+                "full_name": student.full_name,
+                "roll_number": student.roll_number,
+                "branch": student.branch,
+                "year": student.year,
+                "cgpa": student.cgpa,
+                "graduation_year": student.graduation_year,
+                "gender": student.gender,
+                "phone": student.phone,
+                "address": student.address,
+                "skills": student.skills,
+                "github": student.github,
+                "linkedin": student.linkedin,
+                "portfolio": student.portfolio,
+                "resume": student.resume
+            }
+        )
+
+
+    @staticmethod
+    def update_profile(user_id, data):
+
+        student = Student.query.filter_by(user_id=user_id).first()
+
+        if not student:
+            return error_response("Student not found.", 404)
+
+        student.full_name = data.get("full_name")
+        student.roll_number = data.get("roll_number")
+        student.branch = data.get("branch")
+        student.year = data.get("year")
+        student.cgpa = data.get("cgpa")
+        student.graduation_year = data.get("graduation_year")
+        student.gender = data.get("gender")
+        student.phone = data.get("phone")
+        student.address = data.get("address")
+        student.skills = data.get("skills")
+        student.github = data.get("github")
+        student.linkedin = data.get("linkedin")
+        student.portfolio = data.get("portfolio")
+
+        db.session.commit()
+
+        return success_response(
+            "Profile updated successfully."
+        )
