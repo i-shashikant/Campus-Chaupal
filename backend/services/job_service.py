@@ -29,3 +29,24 @@ class JobService:
             "Jobs fetched successfully.",
             data
         )
+    
+    @staticmethod
+    def create_job(company_id, data):
+
+        job = Job(
+            company_id=company_id,
+            title=data.get("title"),
+            description=data.get("description"),
+            location=data.get("location"),
+            salary_package=data.get("salary_package"),
+            job_type=data.get("job_type"),
+            eligibility_cgpa=data.get("eligibility_cgpa"),
+            deadline=data.get("deadline")
+        )
+
+        db.session.add(job)
+        db.session.commit()
+
+        return success_response(
+            "Job created successfully."
+        )
