@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import authService from "@/services/authService";
 
 export const useRegisterStore = defineStore("register", {
 
@@ -39,12 +40,32 @@ export const useRegisterStore = defineStore("register", {
 
     actions: {
 
-        reset() {
+    async registerStudent() {
 
-            this.$reset();
+        await authService.registerStudent(
+            this.student
+        );
 
-        }
+        this.reset();
+
+    },
+
+    async registerCompany() {
+
+        await authService.registerCompany(
+            this.company
+        );
+
+        this.reset();
+
+    },
+
+    reset() {
+
+        this.$reset();
 
     }
+
+}
 
 });

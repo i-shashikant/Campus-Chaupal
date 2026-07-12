@@ -143,7 +143,7 @@
 </template> -->
 
 <template>
-<form>
+<form @submit.prevent="submit">
     <h5 class="mb-3">Account Information</h5>
     <div class="row">
         <div class="col-md-6 mb-3">
@@ -189,6 +189,39 @@ import { ref } from "vue";
 const confirmPassword = ref("");
 
 import { useRegisterStore } from "@/stores/register";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const registerStore = useRegisterStore();
+async function submit() {
+
+    if (
+        registerStore.company.password !==
+        confirmPassword.value
+    ) {
+
+        alert("Passwords do not match.");
+        return;
+
+    }
+
+    try {
+
+        await registerStore.registerCompany();
+
+        alert(
+            "Company registered successfully. Waiting for admin approval."
+        );
+
+        router.push("/login");
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
 </script>

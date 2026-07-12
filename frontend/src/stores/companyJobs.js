@@ -3,13 +3,27 @@ import companyJobService from "@/services/companyJobService";
 
 export const useCompanyJobsStore = defineStore("companyJobs", {
 
+    state: () => ({
+        loading: false
+    }),
+
     actions: {
 
         async createJob(job) {
 
-            await companyJobService.createJob(job);
+            this.loading = true;
 
-            alert("Job Posted Successfully!");
+            try {
+
+                await companyJobService.createJob(job);
+
+                alert("Job Posted Successfully!");
+
+            } finally {
+
+                this.loading = false;
+
+            }
 
         }
 
