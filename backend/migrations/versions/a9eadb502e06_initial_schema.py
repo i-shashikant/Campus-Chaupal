@@ -1,8 +1,8 @@
-"""Initial database schema
+"""Initial schema
 
-Revision ID: 8ac233723228
+Revision ID: a9eadb502e06
 Revises: 
-Create Date: 2026-07-09 20:47:24.490063
+Create Date: 2026-07-12 12:28:29.058578
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8ac233723228'
+revision = 'a9eadb502e06'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('uuid', sa.String(length=36), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
-    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=True),
     sa.Column('password_hash', sa.String(length=255), nullable=False),
     sa.Column('role', sa.String(length=20), nullable=False),
     sa.Column('status', sa.String(length=20), nullable=True),
@@ -39,7 +39,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('company_code', sa.String(length=50), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('company_name', sa.String(length=150), nullable=False),
+    sa.Column('company_name', sa.String(length=150), nullable=True),
     sa.Column('website', sa.String(length=255), nullable=True),
     sa.Column('location', sa.String(length=150), nullable=True),
     sa.Column('industry', sa.String(length=100), nullable=True),
@@ -67,8 +67,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('student_code', sa.String(length=20), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('full_name', sa.String(length=120), nullable=False),
-    sa.Column('roll_number', sa.String(length=20), nullable=False),
+    sa.Column('full_name', sa.String(length=120), nullable=True),
+    sa.Column('roll_number', sa.String(length=20), nullable=True),
     sa.Column('branch', sa.String(length=100), nullable=True),
     sa.Column('cgpa', sa.Float(), nullable=True),
     sa.Column('graduation_year', sa.Integer(), nullable=True),

@@ -13,7 +13,7 @@ class Company(db.Model):
     company_name = db.Column(db.String(150), nullable=True)
     website = db.Column(db.String(255))
     location = db.Column(db.String(150))
-    industry = db.Column(db.String(100), nullablle=True)
+    industry = db.Column(db.String(100), nullable=True)
     hr_name = db.Column(db.String(100), nullable=True)
     hr_email = db.Column(db.String(120))
     phone = db.Column(db.String(15))
