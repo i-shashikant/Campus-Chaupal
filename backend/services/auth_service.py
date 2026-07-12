@@ -1,12 +1,15 @@
 from datetime import datetime
 from flask_jwt_extended import create_access_token
-from extensions import db
+from extensions import db, security
 from models import User, Student, Company
 from utils.enums import Role
-from utils.helper import (generate_student_code, generate_company_code)
-from utils.response import (success_response, error_response)
-from utils.validators import (validate_email, validate_password)
+from utils.helper import generate_student_code, generate_company_code
+from utils.response import success_response, error_response
+from utils.validators import validate_email, validate_password
 import traceback
+
+from flask_security import hash_password, verify_password
+from flask_security.utils import login_user
 
 
 
@@ -39,10 +42,12 @@ class AuthService:
 
 
         try:
+            student_role = security.datastore.find_or_create_role(
+                name=Role.STUDENT.value, description="Student user"
+            )
 
-            user = User(email=email, role=Role.STUDENT.value)
-            user.set_password(password)
-            db.session.add(user)
+            user = security.datastore.create_user(email=email, role=Role.STUDENT.value, password=hash_password(password))
+            security.datastore.add_role_to_user(user, student_role)
             db.session.flush()
 
             student = Student(
@@ -56,7 +61,6 @@ class AuthService:
             return success_response(
                 "Student registered successfully."
             )
-
         except Exception as e:
             db.session.rollback()
             traceback.print_exc()
@@ -87,10 +91,12 @@ class AuthService:
             
 
         try:
+            company_role = security.datastore.find_or_create_role(
+                name=Role.COMPANY.value, description="Company / recruiter user"
+            )
 
-            user = User(email=email, role=Role.COMPANY.value)
-            user.set_password(password)
-            db.session.add(user)
+            user = security.datastore.create_user(email=email, role=Role.COMPANY.value, password=hash_password(password))
+            security.datastore.add_role_to_user(user, company_role)
             db.session.flush()
 
             company = Company(
@@ -107,6 +113,7 @@ class AuthService:
 
         except Exception as e:
             db.session.rollback()
+            traceback.print_exc()
             return error_response(str(e), status_code=500)
 
     @staticmethod
@@ -116,50 +123,36 @@ class AuthService:
         password = data.get("password", "")
 
         user = User.query.filter_by(email=email).first()
-        print("EMAIL:", email)
-        print("USER:", user)
-
-        if user:
-            print("PASSWORD CHECK:", user.check_password(password))
-
-        if not user:
+        if not user or not verify_password(password, user.password):
             return error_response("Invalid email or password.", status_code=401)
-
-        if not user.check_password(password):
-            return error_response("Invalid email or password.", status_code=401)
-
-        if not user.is_active:
+        
+        if not user.active:
             return error_response("Your account has been deactivated.", status_code=403)
 
+        # companies stay locked out of the portal until admin approves them
         if user.role == Role.COMPANY.value:
-
             company = Company.query.filter_by(user_id=user.id).first()
             if company and company.status != "Approved":
                 return error_response(
                     "Your company account is awaiting admin approval.",
-                    status_code=403
+                    status_code=403,
                 )
 
         user.last_login = datetime.utcnow()
         db.session.commit()
 
-        access_token = create_access_token(
-            identity=str(user.id),
-            additional_claims={
-                "role": user.role,
-                "email":user.email
-            }
-        )
+        login_user(user)
+        auth_token = user.get_auth_token()
 
         return success_response(
             "Login successful.",
             {
-                "access_token": access_token,
-
+                "auth_token": auth_token,
                 "user": {
                     "id": user.id,
                     "email": user.email,
-                    "role": user.role
-                }
-            }
-)
+                    "role": user.role,
+                },
+            },
+        )      
+        

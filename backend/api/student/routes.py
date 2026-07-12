@@ -1,30 +1,25 @@
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_security import auth_required, roles_required, current_user
 
 from services.student_service import StudentService
 
 student_bp = Blueprint(
     "student",
     __name__,
-    url_prefix="/api/student"
+    url_prefix="/api/student",
 )
 
 
 @student_bp.route("/profile", methods=["GET"])
-@jwt_required()
+@auth_required("token")
+@roles_required("student")
 def get_profile():
-
-    user_id = int(get_jwt_identity())
-
-    return StudentService.get_profile(user_id)
+    return StudentService.get_profile(current_user.id)
 
 
 @student_bp.route("/profile", methods=["PUT"])
-@jwt_required()
+@auth_required("token")
+@roles_required("student")
 def update_profile():
-
-    user_id = int(get_jwt_identity())
-
     data = request.get_json()
-
-    return StudentService.update_profile(user_id, data)
+    return StudentService.update_profile(current_user.id, data)
