@@ -15,7 +15,7 @@ const handleLogin = async () => {
     try {
         const response = await authStore.login(form);
 
-        switch (user.role) {
+        switch (response.user.role) {
             case "student":
                 router.push("/student/dashboard");
                 break;

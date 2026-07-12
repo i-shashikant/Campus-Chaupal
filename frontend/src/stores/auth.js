@@ -14,6 +14,7 @@ export const useAuthStore = defineStore("auth", {
             this.error = null;
 
             try {
+                const response = await authService.login(credentials);
                 const data = resoponse.data.data;
 
                 localStorage.setItem(
@@ -21,12 +22,9 @@ export const useAuthStore = defineStore("auth", {
                     data.access_token
                 );
 
-                this.user = {
-                    id: data.user_id,
-                    role: data.role
-                };
-
-                return response.data;
+                this.user = data.user;
+                return data;
+                
             } catch (err) {
                 this.error =
                     err.response?.data?.message ||

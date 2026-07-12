@@ -33,7 +33,9 @@ class AuthService:
             return error_response(message)
 
         if User.query.filter_by(email=email).first():
+            
             return error_response("Email already exists.")
+            
 
 
         try:
@@ -82,6 +84,7 @@ class AuthService:
 
         if User.query.filter_by(email=email).first():
             return error_response("Email already exists.")
+            
 
         try:
 
@@ -113,6 +116,11 @@ class AuthService:
         password = data.get("password", "")
 
         user = User.query.filter_by(email=email).first()
+        print("EMAIL:", email)
+        print("USER:", user)
+
+        if user:
+            print("PASSWORD CHECK:", user.check_password(password))
 
         if not user:
             return error_response("Invalid email or password.", status_code=401)
