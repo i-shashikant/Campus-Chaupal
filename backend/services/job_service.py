@@ -1,6 +1,7 @@
 from models import Job
 from extensions import db
 from utils.response import success_response, error_response
+from datetime import datetime
 
 
 class JobService:
@@ -29,9 +30,18 @@ class JobService:
             "Jobs fetched successfully.",
             data
         )
-    
+
+
     @staticmethod
     def create_job(company_id, data):
+
+        deadline = None
+
+        if data.get("deadline"):
+            deadline = datetime.strptime(
+                data["deadline"],
+                "%Y-%m-%d"
+            ).date()
 
         job = Job(
             company_id=company_id,
@@ -41,7 +51,7 @@ class JobService:
             salary_package=data.get("salary_package"),
             job_type=data.get("job_type"),
             eligibility_cgpa=data.get("eligibility_cgpa"),
-            deadline=data.get("deadline")
+            deadline=deadline
         )
 
         db.session.add(job)
