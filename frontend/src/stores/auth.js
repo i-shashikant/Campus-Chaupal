@@ -15,11 +15,11 @@ export const useAuthStore = defineStore("auth", {
 
             try {
                 const response = await authService.login(credentials);
-                const data = resoponse.data.data;
+                const data = response.data.data;
 
                 localStorage.setItem(
-                    "access_token",
-                    data.access_token
+                    "auth_token",
+                    data.auth_token
                 );
 
                 this.user = data.user;
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore("auth", {
         },
 
         logout() {
-            localStorage.removeItem("access_token");
+            localStorage.removeItem("auth_token");
             this.user = null;
         },
     },
