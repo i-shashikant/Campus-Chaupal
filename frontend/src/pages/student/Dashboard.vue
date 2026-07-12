@@ -40,7 +40,7 @@
 
 <script setup>
 
-import DashboardLayout from "@/layouts/DashboardLayout.vue";
+import DashboardLayout from "@/layouts/StudentLayout.vue";
 import ProfileCompletionCard from "@/components/student/ProfileCompletionCard.vue";
 
 </script>

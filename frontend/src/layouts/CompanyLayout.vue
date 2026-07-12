@@ -2,7 +2,7 @@
 
 <div class="d-flex">
 
-    <Sidebar
+    <CompanySidebar
         :collapsed="collapsed"
         @toggle="collapsed=!collapsed"
     />
@@ -26,7 +26,7 @@
 <script setup>
 
 import { ref } from "vue";
-import Sidebar from "@/components/layout/Sidebar.vue";
+import CompanySidebar from "@/components/layout/CompanySidebar.vue";
 import TopNavbar from "@/components/layout/TopNavbar.vue";
 
 const collapsed = ref(false);

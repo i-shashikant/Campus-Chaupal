@@ -45,3 +45,7 @@
     </DashboardLayout>
 
 </template>
+
+<script setup>
+import CompanyLayout from "@/layouts/CompanyLayout.vue";
+</script>
