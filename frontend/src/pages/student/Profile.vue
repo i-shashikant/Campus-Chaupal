@@ -61,7 +61,7 @@
                     <div class="mb-3">
                         <label class="form-label"> Address </label>
 
-                        <textarea rows="3" class="form-control" v-model="profileStore.profile.phone"></textarea>
+                        <textarea rows="3" class="form-control" v-model="profileStore.profile.address"></textarea>
                     </div>
                 </div>
             </div>
@@ -139,7 +139,7 @@
             <div class="row">
                 <div class="col-md-6 mb-3"> 
                     <label class="form-label">Skills</label>
-                    <textarea rows="3" class="form-control"></textarea>
+                    <textarea rows="3" class="form-control" v-model="profileStore.profile.skills"></textarea>
                 </div>
 
                 <div class="col-md-6 mb-3"> 
@@ -186,13 +186,12 @@
 <script setup>
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
-import { useStudentProfileStore } from "@/stores/studentProfile";
 
-const profileStore = useStudentProfileStore();
+
 import { onMounted } from "vue";
 import { useStudentProfileStore } from "@/stores/studentProfile";
-
 const profileStore = useStudentProfileStore();
+
 
 onMounted(() => {
 
