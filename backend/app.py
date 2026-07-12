@@ -7,6 +7,7 @@ from models import Role, User, Student, Company
 from api.auth import auth_bp
 from api.student.routes import student_bp
 from utils.response import error_response
+from api.job.routes import job_bp
 
 
 def create_app():
@@ -30,6 +31,7 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(student_bp)
+    app.register_blueprint(job_bp)
 
     CORS(app)
 
