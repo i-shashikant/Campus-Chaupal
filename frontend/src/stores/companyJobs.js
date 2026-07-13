@@ -1,29 +1,84 @@
 import { defineStore } from "pinia";
 import companyJobService from "@/services/companyJobService";
 
-export const useCompanyJobsStore = defineStore("companyJobs", {
+export const useCompanyJobStore = defineStore("companyJob", {
 
     state: () => ({
+
+        jobs: [],
+
+        job: {
+
+            title: "",
+            description: "",
+            location: "",
+            job_type: "",
+            salary_package: "",
+            eligibility_cgpa: "",
+            deadline: ""
+
+        },
+
         loading: false
+
     }),
 
     actions: {
 
-        async createJob(job) {
+        async loadJobs() {
 
             this.loading = true;
 
             try {
 
-                await companyJobService.createJob(job);
+                const response =
+                    await companyJobService.getJobs();
 
-                alert("Job Posted Successfully!");
+                this.jobs = response.data.data;
 
             } finally {
 
                 this.loading = false;
 
             }
+
+        },
+
+        async createJob() {
+
+            this.loading = true;
+
+            try {
+
+                await companyJobService.createJob(this.job);
+
+                alert("Job created successfully.");
+
+                this.job = {
+
+                    title: "",
+                    description: "",
+                    location: "",
+                    job_type: "",
+                    salary_package: "",
+                    eligibility_cgpa: "",
+                    deadline: ""
+
+                };
+
+            } finally {
+
+                this.loading = false;
+
+            }
+
+        },
+
+        async deleteJob(id) {
+
+            await companyJobService.deleteJob(id);
+
+            this.loadJobs();
 
         }
 

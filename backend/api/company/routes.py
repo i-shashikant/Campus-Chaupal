@@ -10,12 +10,29 @@ company_bp = Blueprint(
 )
 
 
-@company_bp.route("/jobs", methods=["POST"])
+@company_bp.route("/jobs", methods=["GET"])
 @auth_required("token")
 @roles_required("company")
-def create_job():
+def my_jobs():
+    return JobService.get_company_jobs(current_user.company.id)
 
-    return JobService.create_job(
+
+@company_bp.route("/jobs/<int:job_id>", methods=["PUT"])
+@auth_required("token")
+@roles_required("company")
+def update_job(job_id):
+    return JobService.update_job(
         current_user.company.id,
+        job_id,
         request.get_json()
+    )
+
+
+@company_bp.route("/jobs/<int:job_id>", methods=["DELETE"])
+@auth_required("token")
+@roles_required("company")
+def delete_job(job_id):
+    return JobService.delete_job(
+        current_user.company.id,
+        job_id
     )
