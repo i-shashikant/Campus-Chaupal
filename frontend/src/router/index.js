@@ -33,6 +33,21 @@ const routes = [
     },
     
     {
+    path: "/admin/users",
+    component: () => import("@/pages/admin/Users.vue")
+    },
+
+    {
+        path: "/admin/jobs",
+        component: () => import("@/pages/admin/Jobs.vue")
+    },
+    
+    {
+        path: "/admin/applications",
+        component: () => import("@/pages/admin/Applications.vue")
+    },
+
+    {
     path: "/admin/companies",
     component: () => import("@/pages/admin/Companies.vue"),
     meta: {
