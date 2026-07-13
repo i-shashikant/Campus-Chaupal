@@ -1,4 +1,4 @@
-from models import Student, Company, Job, Application
+from models import Student, Company, Job, Application, User
 from utils.enums import CompanyStatus
 from utils.response import success_response, error_response
 from extensions import db
@@ -94,3 +94,75 @@ class AdminService:
         db.session.commit()
 
         return success_response("Company rejected successfully.")
+    
+    @staticmethod
+    def get_users():
+
+        users = User.query.order_by(User.created_at.desc()).all()
+
+        data = []
+
+        for user in users:
+
+            data.append({
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "role": user.role,
+                "status": user.status,
+                "active": user.active
+            })
+
+        return success_response(
+            "Users fetched successfully.",
+            data
+        )
+    
+    @staticmethod
+    def get_jobs():
+
+        jobs = Job.query.order_by(Job.created_at.desc()).all()
+
+        data = []
+
+        for job in jobs:
+
+            data.append({
+                "id": job.id,
+                "title": job.title,
+                "company": job.company.company_name,
+                "location": job.location,
+                "deadline": job.deadline.strftime("%d %b %Y") if job.deadline else None,
+                "applications": len(job.applications),
+                "active": job.is_active
+            })
+
+        return success_response(
+            "Jobs fetched successfully.",
+            data
+        )
+    
+    @staticmethod
+    def get_applications():
+
+        applications = Application.query.order_by(
+            Application.applied_at.desc()
+        ).all()
+
+        data = []
+
+        for application in applications:
+
+            data.append({
+                "id": application.id,
+                "student": application.student.full_name,
+                "company": application.job.company.company_name,
+                "job": application.job.title,
+                "status": application.status,
+                "applied_at": application.applied_at.strftime("%d %b %Y")
+            })
+
+        return success_response(
+            "Applications fetched successfully.",
+            data
+        )

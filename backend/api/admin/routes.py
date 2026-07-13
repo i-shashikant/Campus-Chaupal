@@ -29,3 +29,23 @@ def approve_company(company_id):
 @roles_required("admin")
 def reject_company(company_id):
     return AdminService.reject_company(company_id)
+
+@admin_bp.get("/users")
+@auth_required("token")
+@roles_required("admin")
+def users():
+    return AdminService.get_users()
+
+
+@admin_bp.get("/jobs")
+@auth_required("token")
+@roles_required("admin")
+def jobs():
+    return AdminService.get_jobs()
+
+
+@admin_bp.get("/applications")
+@auth_required("token")
+@roles_required("admin")
+def applications():
+    return AdminService.get_applications()
