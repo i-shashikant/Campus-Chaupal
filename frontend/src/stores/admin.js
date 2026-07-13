@@ -6,8 +6,10 @@ export const useAdminStore = defineStore("admin", {
     state: () => ({
         dashboard: {},
         pendingCompanies: [],
+        companies: [],
         users: [],
         jobs: [],
+        pendingJobs: [],
         applications: [],
         loading: false,
     }),
@@ -41,10 +43,21 @@ export const useAdminStore = defineStore("admin", {
 
         },
 
+        async loadCompanies() {
+
+            const response =
+                await adminService.getCompanies();
+
+            this.companies =
+                response.data.data;
+
+        },
+
         async approveCompany(id) {
 
             await adminService.approveCompany(id);
 
+            await this.loadCompanies();
             await this.loadPendingCompanies();
             await this.loadDashboard();
 
@@ -54,7 +67,26 @@ export const useAdminStore = defineStore("admin", {
 
             await adminService.rejectCompany(id);
 
+            await this.loadCompanies();
             await this.loadPendingCompanies();
+            await this.loadDashboard();
+
+        },
+
+        async blacklistCompany(id) {
+
+            await adminService.blacklistCompany(id);
+
+            await this.loadCompanies();
+            await this.loadDashboard();
+
+        },
+
+        async unblockCompany(id) {
+
+            await adminService.unblockCompany(id);
+
+            await this.loadCompanies();
             await this.loadDashboard();
 
         },
@@ -69,6 +101,22 @@ export const useAdminStore = defineStore("admin", {
 
         },
 
+        async blacklistStudent(id) {
+
+            await adminService.blacklistStudent(id);
+
+            await this.loadUsers();
+
+        },
+
+        async unblockStudent(id) {
+
+            await adminService.unblockStudent(id);
+
+            await this.loadUsers();
+
+        },
+
         async loadJobs() {
 
             const response =
@@ -76,6 +124,36 @@ export const useAdminStore = defineStore("admin", {
 
             this.jobs =
                 response.data.data;
+
+        },
+
+        async loadPendingJobs() {
+
+            const response =
+                await adminService.getPendingJobs();
+
+            this.pendingJobs =
+                response.data.data;
+
+        },
+
+        async approveJob(id) {
+
+            await adminService.approveJob(id);
+
+            await this.loadJobs();
+            await this.loadPendingJobs();
+            await this.loadDashboard();
+
+        },
+
+        async rejectJob(id, reason) {
+
+            await adminService.rejectJob(id, reason);
+
+            await this.loadJobs();
+            await this.loadPendingJobs();
+            await this.loadDashboard();
 
         },
 

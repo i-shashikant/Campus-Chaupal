@@ -6,9 +6,9 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
 
                 <div>
-                    <h2 class="fw-bold">Pending Companies</h2>
+                    <h2 class="fw-bold">Companies</h2>
                     <p class="text-muted">
-                        Review and approve company registrations.
+                        Review registrations and manage company access.
                     </p>
                 </div>
 
@@ -19,10 +19,10 @@
                 <div class="card-body">
 
                     <div
-                        v-if="admin.pendingCompanies.length === 0"
+                        v-if="admin.companies.length === 0"
                         class="text-center py-5 text-muted"
                     >
-                        No pending companies.
+                        No companies found.
                     </div>
 
                     <table
@@ -48,7 +48,7 @@
                         <tbody>
 
                             <tr
-                                v-for="company in admin.pendingCompanies"
+                                v-for="company in admin.companies"
                                 :key="company.id"
                             >
 
@@ -62,30 +62,72 @@
 
                                 <td>
 
-                                    <span class="badge bg-warning text-dark">
-                                        <span class="badge" :class="{ 'bg-success': company.status==='Approved', 'bg-warning text-dark': company.status==='Pending', 'bg-danger': company.status==='Rejected' }" >
+                                    <span
+                                        class="badge"
+                                        :class="{
+                                            'bg-success': company.status === 'Approved',
+                                            'bg-warning text-dark': company.status === 'Pending',
+                                            'bg-danger': company.status === 'Rejected',
+                                            'bg-dark': company.status === 'Blacklisted'
+                                        }"
+                                    >
 
                                         {{ company.status }}
 
-                                        </span>
                                     </span>
 
                                 </td>
 
                                 <td class="text-end">
+
                                     <span v-if="company.status === 'Pending'">
 
-                                        <button>Approve</button>
+                                        <button
+                                            class="btn btn-sm btn-success me-1"
+                                            @click="approve(company.id)"
+                                        >
+                                            Approve
+                                        </button>
 
-                                        <button>Reject</button>
+                                        <button
+                                            class="btn btn-sm btn-outline-danger"
+                                            @click="reject(company.id)"
+                                        >
+                                            Reject
+                                        </button>
+
+                                    </span>
+
+                                    <span v-else-if="company.status === 'Approved'">
+
+                                        <button
+                                            class="btn btn-sm btn-outline-dark"
+                                            @click="blacklist(company.id)"
+                                        >
+                                            Blacklist
+                                        </button>
+
+                                    </span>
+
+                                    <span v-else-if="company.status === 'Blacklisted'">
+
+                                        <button
+                                            class="btn btn-sm btn-outline-success"
+                                            @click="unblock(company.id)"
+                                        >
+                                            Unblock
+                                        </button>
 
                                     </span>
 
                                     <span v-else>
 
-                                        <span class="badge bg-success">
-                                            Approved
-                                        </span>
+                                        <button
+                                            class="btn btn-sm btn-outline-success"
+                                            @click="approve(company.id)"
+                                        >
+                                            Approve
+                                        </button>
 
                                     </span>
 
@@ -115,17 +157,28 @@ import { useAdminStore } from "@/stores/admin";
 const admin = useAdminStore();
 
 onMounted(() => {
-    admin.loadPendingCompanies();
+    admin.loadCompanies();
 });
 
 async function approve(id) {
-    if(confirm("Approve this company?")){
-    await admin.approveCompany(id);
-        }
+    if (confirm("Approve this company?")) {
+        await admin.approveCompany(id);
     }
-
+}
 
 async function reject(id) {
-    await admin.rejectCompany(id);
+    if (confirm("Reject this company?")) {
+        await admin.rejectCompany(id);
+    }
+}
+
+async function blacklist(id) {
+    if (confirm("Blacklist this company? Their active drives will be closed.")) {
+        await admin.blacklistCompany(id);
+    }
+}
+
+async function unblock(id) {
+    await admin.unblockCompany(id);
 }
 </script>

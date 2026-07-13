@@ -1,5 +1,7 @@
 from extensions import db
-from models import Application, Job
+from models import Application, Job, Student
+from datetime import date
+from utils.enums import JobStatus, StudentStatus
 
 
 from utils.response import (
@@ -13,6 +15,62 @@ class ApplicationService:
     @staticmethod
     def apply(student_id, job_id):
 
+        student = db.session.get(Student, student_id)
+
+        if not student:
+            return error_response("Student not found.", 404)
+
+        if student.status == StudentStatus.BLACKLISTED.value:
+            return error_response(
+                "Your account has been blacklisted. Contact the placement cell.",
+                403
+            )
+
+        job = db.session.get(Job, job_id)
+
+        if not job:
+            return error_response("Job not found.", 404)
+
+        if job.status != JobStatus.APPROVED.value or not job.is_active:
+            return error_response(
+                "This placement drive is not open for applications.",
+                400
+            )
+
+        if job.deadline and job.deadline < date.today():
+            return error_response(
+                "Application deadline has passed.",
+                400
+            )
+
+        if job.eligibility_cgpa and (
+            student.cgpa is None or student.cgpa < job.eligibility_cgpa
+        ):
+            return error_response(
+                "You do not meet the minimum CGPA requirement.",
+                400
+            )
+
+        if job.eligibility_branch:
+            allowed = [
+                b.strip().lower()
+                for b in job.eligibility_branch.split(",")
+                if b.strip()
+            ]
+            if allowed and (student.branch or "").lower() not in allowed:
+                return error_response(
+                    "You are not eligible for this drive based on branch.",
+                    400
+                )
+
+        if job.eligibility_year and student.year and (
+            student.year != job.eligibility_year
+        ):
+            return error_response(
+                "You are not eligible for this drive based on year.",
+                400
+            )
+
         exists = Application.query.filter_by(
             student_id=student_id,
             job_id=job_id
@@ -23,15 +81,6 @@ class ApplicationService:
             return error_response(
                 "Already applied.",
                 400
-            )
-
-        job = Job.query.get(job_id)
-
-        if not job:
-
-            return error_response(
-                "Job not found.",
-                404
             )
 
         application = Application(
@@ -116,6 +165,7 @@ class ApplicationService:
             "Applications fetched.",
             data
         )
+
     @staticmethod
     def update_application_status(company_id, application_id, data):
 

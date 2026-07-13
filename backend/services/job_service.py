@@ -3,7 +3,7 @@ from datetime import datetime, date
 from extensions import db
 from models import Job
 from utils.response import success_response, error_response
-from util.enums import JobStatus
+from utils.enums import JobStatus
 
 class JobService:
 

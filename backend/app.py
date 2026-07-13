@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_security import SQLAlchemyUserDatastore
 from config import Config
-from extensions import db, migrate, security, mail
+from extensions import db, migrate, security, mail, cache
 from models import Role, User, Student, Company 
 from api.auth import auth_bp
 from api.admin import admin_bp
@@ -20,6 +20,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
+    cache.init_app(app)
     
 
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
