@@ -30,47 +30,37 @@
 
     </div>
 
-    <!-- Statistics -->
+    <!-- Dashboard Stats -->
 
     <div class="row g-4 mb-4">
 
         <div class="col-md-4">
 
-            <div class="card shadow-sm border-0 rounded-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
 
-                <div class="card-body">
+                <div class="card-body d-flex align-items-center">
 
-                    <i class="bi bi-briefcase fs-2 text-primary"></i>
+                    <div class="rounded-circle bg-primary-subtle p-3 me-3">
 
-                    <h3 class="fw-bold mt-2">
-                        {{ stats.jobs }}
-                    </h3>
+                        <i class="bi bi-briefcase-fill fs-3 text-primary"></i>
 
-                    <small class="text-muted">
-                        Available Jobs
-                    </small>
+                    </div>
 
-                </div>
+                    <div>
 
-            </div>
+                        <h3 class="fw-bold mb-0">
 
-        </div>
+                            {{ stats.jobs }}
 
-        <div class="col-md-4">
+                        </h3>
 
-            <div class="card shadow-sm border-0 rounded-4">
+                        <small class="text-muted">
 
-                <div class="card-body">
+                            Available Jobs
 
-                    <i class="bi bi-send-check fs-2 text-success"></i>
+                        </small>
 
-                    <h3 class="fw-bold mt-2">
-                        {{ stats.applications }}
-                    </h3>
-
-                    <small class="text-muted">
-                        Applications
-                    </small>
+                    </div>
 
                 </div>
 
@@ -80,19 +70,65 @@
 
         <div class="col-md-4">
 
-            <div class="card shadow-sm border-0 rounded-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
 
-                <div class="card-body">
+                <div class="card-body d-flex align-items-center">
 
-                    <i class="bi bi-percent fs-2 text-warning"></i>
+                    <div class="rounded-circle bg-success-subtle p-3 me-3">
 
-                    <h3 class="fw-bold mt-2">
-                        {{ completion }}%
-                    </h3>
+                        <i class="bi bi-file-earmark-check-fill fs-3 text-success"></i>
 
-                    <small class="text-muted">
-                        Profile Completion
-                    </small>
+                    </div>
+
+                    <div>
+
+                        <h3 class="fw-bold mb-0">
+
+                            {{ stats.applications }}
+
+                        </h3>
+
+                        <small class="text-muted">
+
+                            Applications
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <div class="rounded-circle bg-warning-subtle p-3 me-3">
+
+                        <i class="bi bi-trophy-fill fs-3 text-warning"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="fw-bold mb-0">
+
+                            {{ stats.selected }}
+
+                        </h3>
+
+                        <small class="text-muted">
+
+                            Selected
+
+                        </small>
+
+                    </div>
 
                 </div>
 
@@ -101,6 +137,8 @@
         </div>
 
     </div>
+
+
 
     <!-- Profile Row -->
 
@@ -284,24 +322,43 @@
 
 <script setup>
 
-import { onMounted } from "vue";
-
-import DashboardLayout from "@/layouts/DashboardLayout.vue";
-
-import ProfileCard from "@/components/student/ProfileCard.vue";
-import AcademicCard from "@/components/student/AcademicCard.vue";
-import ProfessionalCard from "@/components/student/ProfessionalCard.vue";
-import ProfileCompletionCard from "@/components/student/ProfileCompletionCard.vue";
 
 
-// import { useStudentStore } from "@/stores/student";
+import { onMounted, computed } from "vue";
 
+import { useStudentProfileStore } from "@/stores/studentProfile";
+import { useJobStore } from "@/stores/jobs";
+import { useApplicationStore } from "@/stores/application";
 
-const studentStore = useStudentStore();
+const profileStore = useStudentProfileStore();
+const jobStore = useJobStore();
+const applicationStore = useApplicationStore();
 
+onMounted(async () => {
 
-onMounted(() => {
-    studentStore.getDashboard();
+    await profileStore.loadProfile();
+    await jobStore.loadJobs();
+    await applicationStore.loadApplications();
+
 });
+const student = computed(() => profileStore.profile);
 
+const latestJobs = computed(() => jobStore.jobs.slice(0, 3));
+
+const recentApplications = computed(() =>
+    applicationStore.applications.slice(0, 5)
+);
+
+const stats = computed(() => ({
+    jobs: jobStore.jobs.length,
+    applications: applicationStore.applications.length,
+    selected: applicationStore.applications.filter(
+        a => a.status === "Selected"
+    ).length
+}));
+
+const completion = computed(() => {
+    // temporary calculation
+    return 80;
+});
 </script>
