@@ -1,59 +1,118 @@
 <template>
-  <DashboardLayout>
 
-    <div class="container-fluid">
+<DashboardLayout>
 
-      <h2 class="fw-bold mb-4">
+<div class="container-fluid">
+
+    <h2 class="fw-bold mb-4">
+
         Available Jobs
-      </h2>
 
-      <div
-        class="card mb-3"
-        v-for="job in jobsStore.jobs"
-        :key="job.id"
-      >
-        <div class="card-body">
+    </h2>
 
-          <h4>{{ job.title }}</h4>
+    <div
+        class="row"
+        v-if="store.jobs.length"
+    >
 
-          <h6 class="text-muted">
-            {{ job.company }}
-          </h6>
+        <div
+            class="col-md-6 mb-4"
+            v-for="job in store.jobs"
+            :key="job.id"
+        >
 
-          <p>{{ job.description }}</p>
+            <div class="card shadow-sm h-100">
 
-          <p>
-            📍 {{ job.location }}
-          </p>
+                <div class="card-body">
 
-          <p>
-            💰 {{ job.salary_package }}
-          </p>
+                    <h4>
 
-          <button class="btn btn-primary">
-            Apply
-          </button>
+                        {{ job.title }}
+
+                    </h4>
+
+                    <h6 class="text-primary">
+
+                        {{ job.company }}
+
+                    </h6>
+
+                    <p>
+
+                        {{ job.description }}
+
+                    </p>
+
+                    <div class="mb-2">
+
+                        📍 {{ job.location }}
+
+                    </div>
+
+                    <div class="mb-2">
+
+                        💼 {{ job.job_type }}
+
+                    </div>
+
+                    <div class="mb-2">
+
+                        💰 {{ job.salary_package }}
+
+                    </div>
+
+                    <div class="mb-2">
+
+                        🎓 Min CGPA :
+                        {{ job.eligibility_cgpa }}
+
+                    </div>
+
+                    <button
+                        class="btn btn-success mt-3"
+                    >
+
+                        Apply Now
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
-      </div>
 
     </div>
 
-  </DashboardLayout>
+    <div
+        v-else
+        class="text-center text-muted mt-5"
+    >
+
+        No jobs available.
+
+    </div>
+
+</div>
+
+</DashboardLayout>
+
 </template>
 
 <script setup>
+
 import { onMounted } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
-import { useJobsStore } from "@/stores/jobs";
+import { useJobStore } from "@/stores/job";
 
-const jobsStore = useJobsStore();
+const store = useJobStore();
 
 onMounted(() => {
 
-    jobsStore.loadJobs();
+    store.loadJobs();
 
 });
+
 </script>
