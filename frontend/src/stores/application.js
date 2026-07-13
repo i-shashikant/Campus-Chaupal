@@ -14,9 +14,19 @@ export const useApplicationStore = defineStore("application", {
 
         async apply(jobId) {
 
-            await applicationService.apply(jobId);
+            try {
 
-            alert("Application submitted successfully.");
+                await applicationService.apply(jobId);
+
+                alert("Application submitted successfully.");
+
+                return true;
+
+            } catch (error) {
+
+                return false;
+
+            }
 
         },
 

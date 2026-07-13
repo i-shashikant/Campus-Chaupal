@@ -172,13 +172,37 @@
                         </button>
 
                         <button
-                            class="btn btn-success"
-                            @click="applicationStore.apply(job.id)"
+                            class="btn"
+                            :class="job.applied ? 'btn-success' : 'btn-primary'"
+                            :disabled="job.applied || applying.includes(job.id)"
+                            @click="applyJob(job.id)"
                         >
 
-                            <i class="bi bi-send-check me-2"></i>
+                            <template v-if="applying.includes(job.id)">
 
-                            Apply Now
+                                <span
+                                    class="spinner-border spinner-border-sm me-2"
+                                ></span>
+
+                                Applying...
+
+                            </template>
+
+                            <template v-else-if="job.applied">
+
+                                <i class="bi bi-check-circle-fill me-2"></i>
+
+                                Applied
+
+                            </template>
+
+                            <template v-else>
+
+                                <i class="bi bi-send-check me-2"></i>
+
+                                Apply Now
+
+                            </template>
 
                         </button>
 
@@ -224,6 +248,9 @@ import { useJobStore } from "@/stores/jobs";
 import { useApplicationStore } from "@/stores/application";
 
 const applicationStore = useApplicationStore();
+import { ref } from "vue";
+
+const applying = ref([]);
 
 const store = useJobStore();
 
@@ -232,5 +259,31 @@ onMounted(() => {
     store.loadJobs();
 
 });
+
+const applyJob = async (jobId) => {
+
+    applying.value.push(jobId);
+
+    const success = await applicationStore.apply(jobId);
+
+    if (success) {
+
+        const job = store.jobs.find(
+            j => j.id === jobId
+        );
+
+        if (job) {
+
+            job.applied = true;
+
+        }
+
+    }
+
+    applying.value = applying.value.filter(
+        id => id !== jobId
+    );
+
+};
 
 </script>

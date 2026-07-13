@@ -21,8 +21,7 @@
             </div>
 
             <button
-                class="btn btn-success rounded-pill"
-            >
+                class="btn btn-success rounded-pill" @click="exportCSV">
                 <i class="bi bi-download me-2"></i>
                 Export CSV
             </button>
@@ -177,6 +176,59 @@ import { useApplicationStore } from "@/stores/application";
 const store = useApplicationStore();
 
 const search = ref("");
+
+const exportCSV = () => {
+
+    const headers = [
+        "Company",
+        "Job Role",
+        "Status",
+        "Applied On"
+    ];
+
+    const rows = filteredApplications.value.map(app => [
+
+        app.company,
+        app.title,
+        app.status,
+        app.applied_at
+
+    ]);
+
+    const csvContent = [
+
+        headers.join(","),
+
+        ...rows.map(row => row.join(","))
+
+    ].join("\n");
+
+    const blob = new Blob(
+
+        [csvContent],
+
+        { type: "text/csv;charset=utf-8;" }
+
+    );
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.setAttribute(
+        "download",
+        "placement_history.csv"
+    );
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+};
 
 onMounted(() => {
 
