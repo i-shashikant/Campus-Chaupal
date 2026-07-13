@@ -54,6 +54,16 @@ const routes = [
     {
         path: "/company/jobs/create",
         component: () => import("@/pages/company/CreateJob.vue")
+    },
+    
+    {
+    path: "/student/applications",
+    component: () => import("@/pages/student/Applications.vue")
+    },
+
+    {
+        path: "/company/applications",
+        component: () => import("@/pages/company/Applications.vue")
     }
 ]
 
