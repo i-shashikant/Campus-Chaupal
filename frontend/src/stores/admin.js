@@ -57,7 +57,37 @@ export const useAdminStore = defineStore("admin", {
             await this.loadPendingCompanies();
             await this.loadDashboard();
 
-        }
+        },
+
+        async loadUsers() {
+
+            const response =
+                await adminService.getUsers();
+
+            this.users =
+                response.data.data;
+
+        },
+
+        async loadJobs() {
+
+            const response =
+                await adminService.getJobs();
+
+            this.jobs =
+                response.data.data;
+
+        },
+
+        async loadApplications() {
+
+            const response =
+                await adminService.getApplications();
+
+            this.applications =
+                response.data.data;
+
+        },
 
     }
 
