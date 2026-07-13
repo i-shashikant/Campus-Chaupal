@@ -57,6 +57,34 @@ class AdminService:
             "Pending companies fetched successfully.",
             data
         )
+    
+    @staticmethod
+    def get_companies():
+
+        companies = Company.query.order_by(
+            Company.created_at.desc()
+        ).all()
+
+        data = []
+
+        for company in companies:
+
+            data.append({
+                "id": company.id,
+                "company_name": company.company_name,
+                "company_code": company.company_code,
+                "email": company.user.email,
+                "location": company.location,
+                "industry": company.industry,
+                "status": company.status,
+                "created_at": company.created_at.strftime("%d %b %Y")
+            })
+
+        return success_response(
+            "Pending companies fetched successfully.",
+            data
+        )
+
 
 
     @staticmethod
@@ -98,7 +126,9 @@ class AdminService:
     @staticmethod
     def get_users():
 
-        users = User.query.order_by(User.created_at.desc()).all()
+        users = User.query.filter_by(role="student") \
+        .order_by(User.created_at.desc()) \
+        .all()
 
         data = []
 
@@ -106,7 +136,7 @@ class AdminService:
 
             data.append({
                 "id": user.id,
-                "name": user.name,
+                "name": user.student.full_name if user.student else "-",
                 "email": user.email,
                 "role": user.role,
                 "status": user.status,

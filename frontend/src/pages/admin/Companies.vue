@@ -63,26 +63,31 @@
                                 <td>
 
                                     <span class="badge bg-warning text-dark">
+                                        <span class="badge" :class="{ 'bg-success': company.status==='Approved', 'bg-warning text-dark': company.status==='Pending', 'bg-danger': company.status==='Rejected' }" >
+
                                         {{ company.status }}
+
+                                        </span>
                                     </span>
 
                                 </td>
 
                                 <td class="text-end">
+                                    <span v-if="company.status === 'Pending'">
 
-                                    <button
-                                        class="btn btn-success btn-sm me-2"
-                                        @click="approve(company.id)"
-                                    >
-                                        Approve
-                                    </button>
+                                        <button>Approve</button>
 
-                                    <button
-                                        class="btn btn-danger btn-sm"
-                                        @click="reject(company.id)"
-                                    >
-                                        Reject
-                                    </button>
+                                        <button>Reject</button>
+
+                                    </span>
+
+                                    <span v-else>
+
+                                        <span class="badge bg-success">
+                                            Approved
+                                        </span>
+
+                                    </span>
 
                                 </td>
 
@@ -114,8 +119,11 @@ onMounted(() => {
 });
 
 async function approve(id) {
+    if(confirm("Approve this company?")){
     await admin.approveCompany(id);
-}
+        }
+    }
+
 
 async function reject(id) {
     await admin.rejectCompany(id);
