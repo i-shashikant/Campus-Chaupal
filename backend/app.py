@@ -9,6 +9,7 @@ from api.student.routes import student_bp
 from utils.response import error_response
 from api.job.routes import job_bp
 from api.company.routes import company_bp
+from api.application.routes import application_bp
 
 
 def create_app():
@@ -34,6 +35,7 @@ def create_app():
     app.register_blueprint(student_bp)
     app.register_blueprint(job_bp)
     app.register_blueprint(company_bp)
+    app.register_blueprint(application_bp)
 
     CORS(app)
 

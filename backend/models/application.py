@@ -1,117 +1,41 @@
+from datetime import datetime
 from extensions import db
-from models import Application, Job
-
-from utils.response import (
-    success_response,
-    error_response
-)
 
 
-class ApplicationService:
+class Application(db.Model):
 
-    @staticmethod
-    def apply(student_id, job_id):
+    __tablename__ = "applications"
 
-        exists = Application.query.filter_by(
-            student_id=student_id,
-            job_id=job_id
-        ).first()
+    id = db.Column(db.Integer, primary_key=True)
 
-        if exists:
+    student_id = db.Column(
+        db.Integer,
+        db.ForeignKey("students.id"),
+        nullable=False
+    )
 
-            return error_response(
-                "Already applied.",
-                400
-            )
+    job_id = db.Column(
+        db.Integer,
+        db.ForeignKey("jobs.id"),
+        nullable=False
+    )
 
-        job = Job.query.get(job_id)
+    status = db.Column(
+        db.String(30),
+        default="Applied"
+    )
 
-        if not job:
+    applied_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
 
-            return error_response(
-                "Job not found.",
-                404
-            )
+    student = db.relationship(
+        "Student",
+        backref="applications"
+    )
 
-        application = Application(
-
-            student_id=student_id,
-            job_id=job_id
-
-        )
-
-        db.session.add(application)
-
-        db.session.commit()
-
-        return success_response(
-            "Application submitted successfully."
-        )
-
-    @staticmethod
-    def student_applications(student_id):
-
-        apps = Application.query.filter_by(
-            student_id=student_id
-        ).all()
-
-        data = []
-
-        for app in apps:
-
-            data.append({
-
-                "id": app.id,
-
-                "company":
-                    app.job.company.company_name,
-
-                "title":
-                    app.job.title,
-
-                "status":
-                    app.status,
-
-                "applied_at":
-                    str(app.applied_at)
-
-            })
-
-        return success_response(
-            "Applications fetched.",
-            data
-        )
-
-    @staticmethod
-    def company_applications(company_id):
-
-        apps = Application.query.join(Job).filter(
-            Job.company_id == company_id
-        ).all()
-
-        data = []
-
-        for app in apps:
-
-            data.append({
-
-                "id": app.id,
-
-                "student":
-
-                    app.student.full_name,
-
-                "job":
-
-                    app.job.title,
-
-                "status":
-
-                    app.status
-
-            })
-
-        return success_response(
-            "Applications fetched.",
-            data
-        )
+    job = db.relationship(
+        "Job",
+        backref="applications"
+    )
