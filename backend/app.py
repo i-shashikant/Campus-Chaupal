@@ -5,6 +5,7 @@ from config import Config
 from extensions import db, migrate, security, mail
 from models import Role, User, Student, Company 
 from api.auth import auth_bp
+from api.admin import admin_bp
 from api.student.routes import student_bp
 from utils.response import error_response
 from api.job.routes import job_bp
@@ -32,6 +33,7 @@ def create_app():
         return error_response("You don't have permission to do that.", status_code=403)
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
     app.register_blueprint(student_bp)
     app.register_blueprint(job_bp)
     app.register_blueprint(company_bp)
