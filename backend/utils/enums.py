@@ -31,3 +31,8 @@ class Gender(Enum):
     OTHER = "Other"
     PREFER_NOT_TO_SAY = "Prefer not to say"
 
+class JobStatus(Enum):
+    PENDING = "Pending"
+    APPROVED = "Approved"
+    REJECTED = "Rejected"
+    CLOSED = "Closed"
