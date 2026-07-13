@@ -32,6 +32,10 @@ const routes = [
         component: () => import("@/pages/student/Profile.vue")
     },
 
+    { 
+    path: "/student/jobs",
+    component: Jobs
+    },
     {
     path: "/company/dashboard",
     component: CompanyDashboard
@@ -41,10 +45,15 @@ const routes = [
         path: "/company/jobs/create",
         component: CreateJob
     },
-    
+
     {
-    path: "/student/jobs",
-    component: Jobs
+    path: "/company/jobs",
+    component: () => import("@/pages/company/ManageJobs.vue")
+    },
+
+    {
+        path: "/company/jobs/create",
+        component: () => import("@/pages/company/CreateJob.vue")
     }
 ]
 
