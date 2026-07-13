@@ -20,75 +20,26 @@
 
     </div>
 
-    <ul class="nav flex-column mt-4">
+    <ul class="nav flex-column">
 
-    <!-- STUDENT -->
+        <li
+            v-for="item in menu"
+            :key="item.route"
+            class="nav-item"
+        >
+            <RouterLink
+                :to="item.route"
+                class="nav-link"
+            >
+                <i :class="`bi ${item.icon}`"></i>
 
-        <template v-if="role==='student'">
+                <span>
+                    {{ item.title }}
+                </span>
 
-            <li class="nav-item">
-                <RouterLink to="/student/dashboard" class="nav-link">
-                    <i class="bi bi-house"></i>
-                    <span v-if="!collapsed">Dashboard</span>
-                </RouterLink>
-            </li>
+            </RouterLink>
 
-            <li class="nav-item">
-                <RouterLink to="/student/profile" class="nav-link">
-                    <i class="bi bi-person"></i>
-                    <span v-if="!collapsed">Profile</span>
-                </RouterLink>
-            </li>
-
-            <li class="nav-item">
-                <RouterLink to="/student/jobs" class="nav-link">
-                    <i class="bi bi-briefcase"></i>
-                    <span v-if="!collapsed">Jobs</span>
-                </RouterLink>
-            </li>
-
-            <li class="nav-item">
-                <RouterLink to="/student/applications" class="nav-link">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span v-if="!collapsed">Applications</span>
-                </RouterLink>
-            </li>
-
-        </template>
-
-        <!-- COMPANY -->
-
-        <template v-else-if="role==='company'">
-
-            <li class="nav-item">
-                <RouterLink to="/company/dashboard" class="nav-link">
-                    <i class="bi bi-house"></i>
-                    <span v-if="!collapsed">Dashboard</span>
-                </RouterLink>
-            </li>
-
-            <li class="nav-item">
-                <RouterLink to="/company/jobs/create" class="nav-link">
-                    <i class="bi bi-plus-circle"></i>
-                    <span v-if="!collapsed">Post Job</span>
-                </RouterLink>
-            </li>
-
-            <li class="nav-item">
-                <RouterLink to="/company/jobs" class="nav-link">
-                    <i class="bi bi-briefcase"></i>
-                    <span v-if="!collapsed">Manage Jobs</span>
-                </RouterLink>
-            </li>
-
-            <li class="nav-item">
-                <RouterLink to="/company/applications" class="nav-link">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span v-if="!collapsed">Applications</span>
-                </RouterLink>
-            </li>
-
-        </template>
+        </li>
 
     </ul>
 
@@ -97,20 +48,35 @@
 </template>
 
 <script setup>
-
+import {
+    studentMenu,
+    companyMenu,
+    adminMenu
+} from "@/config/sidebar";
 
 import { computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 
-const props = defineProps({
-    collapsed: Boolean
-});
-
-defineEmits(["toggle"]);
-
 const authStore = useAuthStore();
 
-const role = computed(() => authStore.user?.role);
+const menu = computed(() => {
+
+    switch (authStore.user?.role) {
+
+        case "student":
+            return studentMenu;
+
+        case "company":
+            return companyMenu;
+
+        case "admin":
+            return adminMenu;
+
+        default:
+            return [];
+    }
+
+});
 </script>
 
 

@@ -31,6 +31,15 @@ const routes = [
         role: "admin"
         }
     },
+    
+    {
+    path: "/admin/companies",
+    component: () => import("@/pages/admin/Companies.vue"),
+    meta: {
+        requiresAuth: true,
+        role: "admin"
+        }
+    },
 
     {
         path: "/student/dashboard",
