@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from extensions import db
 from models import Job
 from utils.response import success_response, error_response
-
+from util.enums import JobStatus
 
 class JobService:
 
@@ -25,8 +25,11 @@ class JobService:
                 "job_type": job.job_type,
                 "salary_package": job.salary_package,
                 "eligibility_cgpa": job.eligibility_cgpa,
+                "eligibility_branch": job.eligibility_branch,
+                "eligibility_year": job.eligibility_year,
                 "deadline": str(job.deadline) if job.deadline else None,
-                "company": job.company.company_name if job.company else ""
+                "company": job.company.company_name if job.company else "",
+                "expired": bool(job.deadline and job.deadline < date.today())
 
             })
 
@@ -56,7 +59,11 @@ class JobService:
             salary_package=data.get("salary_package"),
             job_type=data.get("job_type"),
             eligibility_cgpa=data.get("eligibility_cgpa"),
-            deadline=deadline
+            eligibility_branch=data.get("eligibility_branch"),
+            eligibility_year=data.get("eligibility_year"),
+            deadline=deadline,
+            status=JobStatus.PENDING.value,
+            is_active=False
 
         )
 
@@ -64,7 +71,7 @@ class JobService:
         db.session.commit()
 
         return success_response(
-            "Job created successfully."
+            "Placement drive submitted for admin approval."
         )
 
     @staticmethod
@@ -85,8 +92,13 @@ class JobService:
                 "job_type": job.job_type,
                 "salary_package": job.salary_package,
                 "eligibility_cgpa": job.eligibility_cgpa,
+                "eligibility_branch": job.eligibility_branch,
+                "eligibility_year": job.eligibility_year,
                 "deadline": str(job.deadline) if job.deadline else None,
-                "is_active": job.is_active
+                "status": job.status,
+                "reason": job.reason,
+                "is_active": job.is_active,
+                "applicant_count": len(job.applications)
 
             })
 
@@ -119,6 +131,14 @@ class JobService:
             "eligibility_cgpa",
             job.eligibility_cgpa
         )
+        job.eligibility_branch = data.get(
+            "eligibility_branch",
+            job.eligibility_branch
+        )
+        job.eligibility_year = data.get(
+            "eligibility_year",
+            job.eligibility_year
+        )
 
         if data.get("deadline"):
 
@@ -127,10 +147,14 @@ class JobService:
                 "%Y-%m-%d"
             ).date()
 
+        if job.status == JobStatus.APPROVED.value:
+            job.status = JobStatus.PENDING.value
+            job.is_active = False
+
         db.session.commit()
 
         return success_response(
-            "Job updated successfully."
+            "Job updated successfully. Re-submitted for admin approval."
         )
 
     @staticmethod
@@ -154,3 +178,53 @@ class JobService:
         return success_response(
             "Job deleted successfully."
         )
+
+    @staticmethod
+    def approve_job(job_id):
+
+        job = db.session.get(Job, job_id)
+
+        if not job:
+            return error_response("Job not found.", 404)
+
+        job.status = JobStatus.APPROVED.value
+        job.is_active = True
+        job.reason = None
+
+        db.session.commit()
+
+        return success_response("Placement drive approved successfully.")
+
+    @staticmethod
+    def reject_job(job_id, reason=None):
+
+        job = db.session.get(Job, job_id)
+
+        if not job:
+            return error_response("Job not found.", 404)
+
+        job.status = JobStatus.REJECTED.value
+        job.is_active = False
+        job.reason = reason
+
+        db.session.commit()
+
+        return success_response("Placement drive rejected.")
+
+    @staticmethod
+    def close_job(company_id, job_id):
+
+        job = Job.query.filter_by(
+            id=job_id,
+            company_id=company_id
+        ).first()
+
+        if not job:
+            return error_response("Job not found.", 404)
+
+        job.status = JobStatus.CLOSED.value
+        job.is_active = False
+
+        db.session.commit()
+
+        return success_response("Placement drive closed.")
