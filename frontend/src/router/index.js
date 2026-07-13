@@ -23,6 +23,16 @@ const routes = [
     },
 
     {
+    path: "/admin/dashboard",
+    name: "AdminDashboard",
+    component: () => import("@/pages/admin/Dashboard.vue"),
+    meta: {
+        requiresAuth: true,
+        role: "admin"
+        }
+    },
+
+    {
         path: "/student/dashboard",
         component: () => import("@/pages/student/Dashboard.vue")
     },
@@ -33,12 +43,13 @@ const routes = [
     },
 
     { 
-    path: "/student/jobs",
-    component: Jobs
+        path: "/student/jobs",
+        component: Jobs
     },
+
     {
-    path: "/company/dashboard",
-    component: CompanyDashboard
+        path: "/company/dashboard",
+        component: CompanyDashboard
     },
 
     {
@@ -47,8 +58,8 @@ const routes = [
     },
 
     {
-    path: "/company/jobs",
-    component: () => import("@/pages/company/ManageJobs.vue")
+        path: "/company/jobs",
+        component: () => import("@/pages/company/ManageJobs.vue")
     },
 
     {
@@ -57,8 +68,8 @@ const routes = [
     },
     
     {
-    path: "/student/applications",
-    component: () => import("@/pages/student/Applications.vue")
+        path: "/student/applications",
+        component: () => import("@/pages/student/Applications.vue")
     },
 
     {

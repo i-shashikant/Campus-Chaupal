@@ -60,3 +60,32 @@ export const companyMenu = [
 
 ];
 
+export const adminMenu = [
+    {
+        title: "Dashboard",
+        icon: "bi-speedometer2",
+        route: "/admin/dashboard"
+    },
+    {
+        title: "Companies",
+        icon: "bi-buildings",
+        route: "/admin/companies"
+    },
+    {
+        title: "Users",
+        icon: "bi-people",
+        route: "/admin/users"
+    },
+    {
+        title: "Jobs",
+        icon: "bi-briefcase",
+        route: "/admin/jobs"
+    },
+    {
+        title: "Applications",
+        icon: "bi-file-earmark-text",
+        route: "/admin/applications"
+    }
+
+];
+
