@@ -19,6 +19,16 @@ def my_jobs():
     return JobService.get_company_jobs(current_user.company.id)
 
 
+@company_bp.route("/jobs", methods=["POST"])
+@auth_required("token")
+@roles_required("company")
+def create_job():
+    return JobService.create_job(
+        current_user.company.id,
+        request.get_json()
+    )
+
+
 @company_bp.route("/jobs/<int:job_id>", methods=["PUT"])
 @auth_required("token")
 @roles_required("company")
@@ -39,10 +49,22 @@ def delete_job(job_id):
         job_id
     )
 
+@company_bp.route("/jobs/<int:job_id>/close", methods=["PUT"])
+@auth_required("token")
+@roles_required("company")
+def close_job(job_id):
+    return JobService.close_job(
+        current_user.company.id,
+        job_id
+    )
+
+
 @company_bp.route(
     "/applications/<int:application_id>/status",
     methods=["PUT"]
 )
+
+
 @auth_required("token")
 @roles_required("company")
 def update_application_status(application_id):
