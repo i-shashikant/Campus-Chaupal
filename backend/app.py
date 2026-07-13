@@ -20,9 +20,14 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
+    
 
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore, register_blueprint=False)
+
+    with app.app_context():
+        from utils.admin_initializer import initialize_admin
+        initialize_admin()
 
     @security.unauthn_handler
     def handle_unauthenticated(mechanisms, headers=None):
