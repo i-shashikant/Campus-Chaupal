@@ -30,3 +30,4 @@ class Gender(Enum):
     FEMALE = "Female"
     OTHER = "Other"
     PREFER_NOT_TO_SAY = "Prefer not to say"
+

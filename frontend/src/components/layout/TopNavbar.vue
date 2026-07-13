@@ -1,12 +1,28 @@
+<script>
+
+
+import { useAuthStore } from "@/stores/auth";
+
+const authStore = useAuthStore();
+
+
+</script>
+
 <template>
 
 <nav class="navbar dashboard-navbar px-4">
 
-    <h5 class="mb-0">
+    <h3 v-if="authStore.user?.role==='student'">
+    Student Dashboard
+    </h3>
 
-        Student Dashboard
+    <h3 v-else-if="authStore.user?.role==='company'">
+    Company Dashboard
+    </h3>
 
-    </h5>
+    <h3 v-else>
+    Admin Dashboard
+    </h3>
 
     <div class="d-flex align-items-center gap-4">
 
@@ -18,12 +34,6 @@
                 src="https://ui-avatars.com/api/?name=Student"
                 class="avatar"
             />
-
-            <span>
-
-                Shashikant
-
-            </span>
 
         </div>
 

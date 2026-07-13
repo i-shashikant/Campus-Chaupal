@@ -22,63 +22,73 @@
 
     <ul class="nav flex-column mt-4">
 
-        <li class="nav-item">
+    <!-- STUDENT -->
 
-            <RouterLink to="/student/dashboard" class="nav-link">
+        <template v-if="role==='student'">
 
-                <i class="bi bi-house"></i>
+            <li class="nav-item">
+                <RouterLink to="/student/dashboard" class="nav-link">
+                    <i class="bi bi-house"></i>
+                    <span v-if="!collapsed">Dashboard</span>
+                </RouterLink>
+            </li>
 
-                <span v-if="!collapsed">
+            <li class="nav-item">
+                <RouterLink to="/student/profile" class="nav-link">
+                    <i class="bi bi-person"></i>
+                    <span v-if="!collapsed">Profile</span>
+                </RouterLink>
+            </li>
 
-                    Dashboard
+            <li class="nav-item">
+                <RouterLink to="/student/jobs" class="nav-link">
+                    <i class="bi bi-briefcase"></i>
+                    <span v-if="!collapsed">Jobs</span>
+                </RouterLink>
+            </li>
 
-                </span>
+            <li class="nav-item">
+                <RouterLink to="/student/applications" class="nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span v-if="!collapsed">Applications</span>
+                </RouterLink>
+            </li>
 
-            </RouterLink>
+        </template>
 
-        </li>
+        <!-- COMPANY -->
 
-        <li class="nav-item">
+        <template v-else-if="role==='company'">
 
-            <RouterLink to="/student/profile" class="nav-link">
+            <li class="nav-item">
+                <RouterLink to="/company/dashboard" class="nav-link">
+                    <i class="bi bi-house"></i>
+                    <span v-if="!collapsed">Dashboard</span>
+                </RouterLink>
+            </li>
 
-                <i class="bi bi-person"></i>
+            <li class="nav-item">
+                <RouterLink to="/company/jobs/create" class="nav-link">
+                    <i class="bi bi-plus-circle"></i>
+                    <span v-if="!collapsed">Post Job</span>
+                </RouterLink>
+            </li>
 
-                <span v-if="!collapsed">
-                    Profile
-                </span>
+            <li class="nav-item">
+                <RouterLink to="/company/jobs" class="nav-link">
+                    <i class="bi bi-briefcase"></i>
+                    <span v-if="!collapsed">Manage Jobs</span>
+                </RouterLink>
+            </li>
 
-            </RouterLink>
+            <li class="nav-item">
+                <RouterLink to="/company/applications" class="nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span v-if="!collapsed">Applications</span>
+                </RouterLink>
+            </li>
 
-        </li>
-
-        <li class="nav-item">
-
-            <RouterLink to="/student/jobs" class="nav-link">
-
-                <i class="bi bi-briefcase"></i>
-
-                <span v-if="!collapsed">
-                    Jobs
-                </span>
-
-            </RouterLink>
-
-        </li>
-
-        <li class="nav-item">
-
-            <RouterLink to="/student/dashboard" class="nav-link">
-
-                <i class="bi bi-file-earmark-text"></i>
-
-                <span v-if="!collapsed">
-                    Applications
-                </span>
-
-            </RouterLink>
-
-        </li>
+        </template>
 
     </ul>
 
@@ -88,15 +98,21 @@
 
 <script setup>
 
-defineProps({
-    collapsed:Boolean
+
+import { computed } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
+const props = defineProps({
+    collapsed: Boolean
 });
 
-defineEmits([
-    "toggle"
-]);
+defineEmits(["toggle"]);
 
+const authStore = useAuthStore();
+
+const role = computed(() => authStore.user?.role);
 </script>
+
 
 <style scoped>
 .router-link-active{

@@ -2,18 +2,18 @@
 
 <div class="d-flex">
 
-    <CompanySidebar
+    <Sidebar
         :collapsed="collapsed"
-        @toggle="collapsed=!collapsed"
+        @toggle="collapsed = !collapsed"
     />
 
     <div class="flex-grow-1">
 
-        <TopNavbar/>
+        <TopNavbar />
 
         <div class="p-4">
 
-            <slot/>
+            <slot />
 
         </div>
 
@@ -26,7 +26,7 @@
 <script setup>
 
 import { ref } from "vue";
-import CompanySidebar from "@/components/layout/CompanySidebar.vue";
+import Sidebar from "@/components/layout/Sidebar.vue";
 import TopNavbar from "@/components/layout/TopNavbar.vue";
 
 const collapsed = ref(false);
@@ -35,7 +35,6 @@ const collapsed = ref(false);
 
 <style scoped>
 
-
 @import "@/assets/css/dashboard.css";
 
-</style>
+</style>   

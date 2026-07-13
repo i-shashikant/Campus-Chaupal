@@ -45,7 +45,7 @@
 <script setup>
 import { onMounted } from "vue";
 
-import StudentLayout from "@/layouts/StudentLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
 import { useJobsStore } from "@/stores/jobs";
 

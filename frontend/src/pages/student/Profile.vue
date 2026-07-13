@@ -185,7 +185,7 @@
 
 <script setup>
 
-import StudentLayout from "@/layouts/StudentLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
 
 import { onMounted } from "vue";

@@ -135,7 +135,7 @@
 <script setup>
 import { reactive } from "vue";
 
-import CompanyLayout from "@/layouts/CompanyLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
 import { useCompanyJobsStore } from "@/stores/companyJobs";
 
