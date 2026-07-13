@@ -1,6 +1,7 @@
 from extensions import db
 from models import Application, Job
 
+
 from utils.response import (
     success_response,
     error_response
@@ -114,4 +115,45 @@ class ApplicationService:
         return success_response(
             "Applications fetched.",
             data
+        )
+    @staticmethod
+    def update_application_status(company_id, application_id, data):
+
+        application = (
+            Application.query
+            .join(Job)
+            .filter(
+                Application.id == application_id,
+                Job.company_id == company_id
+            )
+            .first()
+        )
+
+        if not application:
+            return error_response(
+                "Application not found.",
+                404
+            )
+
+        allowed_status = [
+            "Applied",
+            "Shortlisted",
+            "Selected",
+            "Rejected"
+        ]
+
+        status = data.get("status")
+
+        if status not in allowed_status:
+            return error_response(
+                "Invalid status.",
+                400
+            )
+
+        application.status = status
+
+        db.session.commit()
+
+        return success_response(
+            "Application status updated successfully."
         )
