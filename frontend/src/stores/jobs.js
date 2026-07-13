@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import jobService from "@/services/jobService";
 
-export const useJobsStore = defineStore("jobs", {
+export const useJobStore = defineStore("job", {
 
     state: () => ({
         jobs: [],

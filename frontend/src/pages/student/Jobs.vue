@@ -105,7 +105,7 @@ import { onMounted } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
-import { useJobStore } from "@/stores/job";
+import { useJobStore } from "@/stores/jobs";
 import { useApplicationStore } from "@/stores/application";
 
 const applicationStore = useApplicationStore();
