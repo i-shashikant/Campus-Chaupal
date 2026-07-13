@@ -33,7 +33,16 @@ v-for="app in store.applications"
 
 <td>{{app.student}}</td>
 <td>{{app.job}}</td>
-<td>{{app.status}}</td>
+<td><select
+    class="form-select form-select-sm"
+    :value="application.status"
+    @change="updateStatus(application.id, $event.target.value)"
+>
+    <option>Applied</option>
+    <option>Shortlisted</option>
+    <option>Selected</option>
+    <option>Rejected</option>
+</select></td>
 
 </tr>
 
@@ -60,6 +69,13 @@ const store = useApplicationStore();
 onMounted(()=>{
 
 store.loadCompanyApplications();
+async function updateStatus(id, status) {
+
+    await applicationStore.updateStatus(id, status);
+
+    await applicationStore.loadCompanyApplications();
+
+}
 
 });
 

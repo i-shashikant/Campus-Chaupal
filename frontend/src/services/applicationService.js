@@ -12,6 +12,13 @@ export default {
 
     getCompanyApplications() {
         return api.get("/applications/company");
+    },
+    
+    updateStatus(applicationId, status) {
+        return api.put(
+            `/company/applications/${applicationId}/status`,
+            { status }
+        );
     }
 
 };
