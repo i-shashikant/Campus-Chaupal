@@ -69,7 +69,7 @@
                     </div>
 
                     <button
-                        class="btn btn-success mt-3"
+                        class="btn btn-success mt-3" @click="applicationStore.apply(job.id)"
                     >
 
                         Apply Now
@@ -106,6 +106,9 @@ import { onMounted } from "vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
 import { useJobStore } from "@/stores/job";
+import { useApplicationStore } from "@/stores/application";
+
+const applicationStore = useApplicationStore();
 
 const store = useJobStore();
 
