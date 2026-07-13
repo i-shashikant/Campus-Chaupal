@@ -14,19 +14,37 @@
 
     </template>
 
-    <div class="mb-4">
+    <div class="row g-4">
 
-        <h2>
+        <div class="col-lg-4">
 
-            Welcome Back 👋
+            <ProfileCard :student="student"/>
 
-        </h2>
+        </div>
 
-        <p class="text-muted">
+        <div class="col-lg-8">
 
-            Ready to kickstart your career today?
+            <ProfileCompletionCard
+                :completion="80"
+            />
 
-        </p>
+        </div>
+
+    </div>
+
+    <div class="row g-4 mt-1">
+
+        <div class="col-lg-6">
+
+            <AcademicCard :student="student"/>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <ProfessionalCard :student="student"/>
+
+        </div>
 
     </div>
 

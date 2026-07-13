@@ -62,30 +62,30 @@ export const companyMenu = [
 
 export const adminMenu = [
     {
-        label: "Dashboard",
+        title: "Dashboard",
         icon: "bi-speedometer2",
-        to: "/admin/dashboard"
+        route: "/admin/dashboard"
     },
     {
-        label: "Companies",
+        title: "Companies",
         icon: "bi-buildings",
-        to: "/admin/companies"
+        route: "/admin/companies"
     },
     {
-        label: "Users",
+        title: "Users",
         icon: "bi-people",
-        to: "/admin/users"
+        route: "/admin/users"
     },
     {
-        label: "Jobs",
+        title: "Jobs",
         icon: "bi-briefcase",
-        to: "/admin/jobs"
+        route: "/admin/jobs"
     },
     {
-        label: "Applications",
+        title: "Applications",
         icon: "bi-file-earmark-text",
-        to: "/admin/applications"
+        route: "/admin/applications"
     }
 
-]
+];
 

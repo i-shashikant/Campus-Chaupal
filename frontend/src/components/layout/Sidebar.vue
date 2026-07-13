@@ -54,6 +54,13 @@ import {
     adminMenu
 } from "@/config/sidebar";
 
+defineProps({
+    collapsed: {
+        type: Boolean,
+        default: false
+    }
+});
+
 import { computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 

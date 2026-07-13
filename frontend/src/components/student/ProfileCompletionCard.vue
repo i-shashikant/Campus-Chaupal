@@ -1,36 +1,42 @@
 <template>
 
-<div class="card shadow-sm p-4 mt-4">
+<div class="card shadow-sm border-0 rounded-4 h-100">
 
-    <h4>
+    <div class="card-body">
 
-        Complete Your Profile
+        <h5 class="fw-bold">
+            Profile Completion
+        </h5>
 
-    </h4>
+        <div class="progress my-3" style="height:12px">
 
-    <p>
+            <div
+                class="progress-bar"
+                :style="{width: completion+'%'}"
+            >
+                {{ completion }}%
+            </div>
 
-        Your profile is only 25% complete.
+        </div>
 
-    </p>
+        <small class="text-muted">
 
-    <div class="progress">
+            Complete your profile to increase visibility.
 
-        <div
-            class="progress-bar"
-            style="width:25%"
-        ></div>
+        </small>
 
     </div>
-
-    <button
-        class="btn btn-primary mt-3"
-    >
-
-        Complete Profile
-
-    </button>
 
 </div>
 
 </template>
+
+<script setup>
+
+defineProps({
+
+    completion:Number
+
+})
+
+</script>
