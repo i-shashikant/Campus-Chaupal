@@ -9,3 +9,23 @@ from services.admin_service import AdminService
 @roles_required("admin")
 def dashboard():
     return AdminService.dashboard()
+
+@admin_bp.get("/companies/pending")
+@auth_required("token")
+@roles_required("admin")
+def pending_companies():
+    return AdminService.pending_companies()
+
+
+@admin_bp.put("/company/<int:company_id>/approve")
+@auth_required("token")
+@roles_required("admin")
+def approve_company(company_id):
+    return AdminService.approve_company(company_id)
+
+
+@admin_bp.put("/company/<int:company_id>/reject")
+@auth_required("token")
+@roles_required("admin")
+def reject_company(company_id):
+    return AdminService.reject_company(company_id)
