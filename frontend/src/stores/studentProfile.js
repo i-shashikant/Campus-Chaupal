@@ -81,7 +81,7 @@ export const useStudentProfileStore = defineStore("studentProfile", {
                 }
             });
 
-            await this.fetchProfile();
+            await this.loadProfile();
 
         }
 

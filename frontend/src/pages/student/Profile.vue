@@ -136,7 +136,7 @@
                         <input type="text" class="form-control" v-model="profileStore.profile.github">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">LinkedIn URL</label>
+                        <label class="form-label"> <i class="bi bi-eye me-2"></i>LinkedIn URL</label>
                         <input type="text" class="form-control" v-model="profileStore.profile.linkedin">
                     </div>
                     <div class="col-md-6 mb-3">
@@ -164,13 +164,14 @@
                             class="form-control mt-3"
                             @change="uploadResume"
                         />
+                        <br>
                         <a
-                            v-if="profileStore.profile.resume"
-                            :href="backendURL + profileStore.profile.resume"
+                            v-if="resumeUrl"
+                            :href="resumeUrl"
                             target="_blank"
-                            class="btn-ledger btn-ledger-outline-ink mt-3"
+                            class="btn-ledger btn-ledger-outline-navy"
                         >
-                            <i class="bi bi-eye me-2"></i>
+                            <i class="bi bi-file-earmark-pdf"></i>
                             View Resume
                         </a>
 
@@ -236,6 +237,14 @@ async function uploadResume(e){
     await profileStore.uploadResume(file);
 
 }
+
+const resumeUrl = computed(() => {
+
+    if (!profileStore.profile.resume) return null;
+
+    return "http://127.0.0.1:5000" + profileStore.profile.resume;
+
+});
 </script>
 
 <style scoped>

@@ -29,12 +29,12 @@ Professional Profile
 </div>
 
 <div class="info-row">
-    <strong>GitHub</strong>
+    <strong><i class="bi bi-github me-2"></i>GitHub</strong>
     <span>{{ student.github || "-" }}</span>
 </div>
 
 <div class="info-row">
-    <strong>LinkedIn</strong>
+    <strong><i class="bi bi-linkedin me-2"></i>LinkedIn</strong>
     <span>{{ student.linkedin || "-" }}</span>
 </div>
 
