@@ -20,56 +20,15 @@ class ApplicationService:
         if not student:
             return error_response("Student not found.", 404)
 
-        if student.status == StudentStatus.BLACKLISTED.value:
-            return error_response(
-                "Your account has been blacklisted. Contact the placement cell.",
-                403
-            )
-
         job = db.session.get(Job, job_id)
 
         if not job:
             return error_response("Job not found.", 404)
 
-        if job.status != JobStatus.APPROVED.value or not job.is_active:
-            return error_response(
-                "This placement drive is not open for applications.",
-                400
-            )
+        eligible, message = ApplicationService.is_eligible(student, job)
 
-        if job.deadline and job.deadline < date.today():
-            return error_response(
-                "Application deadline has passed.",
-                400
-            )
-
-        if job.eligibility_cgpa and (
-            student.cgpa is None or student.cgpa < job.eligibility_cgpa
-        ):
-            return error_response(
-                "You do not meet the minimum CGPA requirement.",
-                400
-            )
-
-        if job.eligibility_branch:
-            allowed = [
-                b.strip().lower()
-                for b in job.eligibility_branch.split(",")
-                if b.strip()
-            ]
-            if allowed and (student.branch or "").lower() not in allowed:
-                return error_response(
-                    "You are not eligible for this drive based on branch.",
-                    400
-                )
-
-        if job.eligibility_year and student.graduation_year and (
-            str(student.graduation_year) != str(job.eligibility_year)
-        ):
-            return error_response(
-                "You are not eligible for this drive based on graduation year.",
-                400
-            )
+        if not eligible:
+            return error_response(message, 400)
 
         exists = Application.query.filter_by(
             student_id=student_id,
@@ -77,21 +36,14 @@ class ApplicationService:
         ).first()
 
         if exists:
-
-            return error_response(
-                "Already applied.",
-                400
-            )
+            return error_response("Already applied.", 400)
 
         application = Application(
-
             student_id=student_id,
             job_id=job_id
-
         )
 
         db.session.add(application)
-
         db.session.commit()
 
         return success_response(
@@ -209,3 +161,45 @@ class ApplicationService:
         return success_response(
             "Application status updated successfully."
         )
+    
+    @staticmethod
+    def is_eligible(student, job):
+
+        if student.status == StudentStatus.BLACKLISTED.value:
+            return False, "Your account has been blacklisted."
+
+        if job.status != JobStatus.APPROVED.value or not job.is_active:
+            return False, "This placement drive is not open."
+
+        if job.deadline and job.deadline < date.today():
+            return False, "Application deadline has passed."
+
+        if (
+            job.eligibility_cgpa
+            and (
+                student.cgpa is None
+                or student.cgpa < job.eligibility_cgpa
+            )
+        ):
+            return False, "Minimum CGPA requirement not met."
+
+        if job.eligibility_branch:
+
+            allowed = [
+                b.strip().lower()
+                for b in job.eligibility_branch.split(",")
+                if b.strip()
+            ]
+
+            if (student.branch or "").lower() not in allowed:
+                return False, "Branch not eligible."
+
+        if (
+            job.eligibility_year
+            and student.graduation_year
+            and str(student.graduation_year)
+            != str(job.eligibility_year)
+        ):
+            return False, "Graduation year not eligible."
+
+        return True, ""

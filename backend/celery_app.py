@@ -1,5 +1,6 @@
 from celery import Celery
 from app import create_app
+from celery.schedules import crontab
 
 flask_app = create_app()
 
@@ -9,7 +10,10 @@ celery = Celery(
     backend=flask_app.config["CELERY_RESULT_BACKEND"],
 )
 
-celery.conf.update(flask_app.config)
+celery.conf.update(
+    timezone="Asia/Kolkata",
+    enable_utc=False,
+)
 
 
 class ContextTask(celery.Task):
@@ -20,5 +24,17 @@ class ContextTask(celery.Task):
 
 celery.Task = ContextTask
 
-# Explicitly import task modules
+celery.conf.beat_schedule = {
+    "daily-reminder": {
+        "task": "tasks.reminders.daily_reminder",
+        "schedule": crontab(hour=9, minute=0),
+    },
+
+    "monthly-report": {
+        "task": "tasks.report_tasks.monthly_report",
+        "schedule": crontab(hour=9, minute=0, day_of_month=1),
+    },
+}
+
 import tasks.reminders
+import tasks.report_tasks

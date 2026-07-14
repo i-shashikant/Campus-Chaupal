@@ -68,3 +68,10 @@
 #     mail.send(msg)
 
 #     return f"report sent to {recipient} for {len(drives)} drives"
+
+from celery_app import celery
+
+
+@celery.task
+def monthly_report():
+    print("Running Monthly Report...")
