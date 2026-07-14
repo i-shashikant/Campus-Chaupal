@@ -1,0 +1,591 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@500&display=swap');
+
+/* ==========================================================
+   ADMIN THEME
+========================================================== */
+
+.ppa-admin{
+
+    --ink:#1b2a4a;
+    --slate:#5b6478;
+    --brass:#c89b3c;
+    --emerald:#2f855a;
+    --amber:#d97706;
+    --crimson:#b4442e;
+    --paper:#fbfaf7;
+    --line:#e4e1d8;
+
+    color:var(--ink);
+
+}
+
+
+/* ==========================================================
+   PAGE HEADER
+========================================================== */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:1rem;
+
+    flex-wrap:wrap;
+
+    margin-bottom:1.5rem;
+
+}
+
+.page-title{
+
+    font-family:"Fraunces",serif;
+
+    font-weight:600;
+
+    margin-bottom:.15rem;
+
+}
+
+.page-sub{
+
+    color:var(--slate);
+
+    margin:0;
+
+}
+
+
+/* ==========================================================
+   SEARCH
+========================================================== */
+
+.search-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.5rem;
+
+    background:#fff;
+
+    border:1px solid var(--line);
+
+    border-radius:.7rem;
+
+    padding:.55rem .9rem;
+
+    min-width:280px;
+
+}
+
+.search-box i{
+
+    color:var(--slate);
+
+}
+
+.search-box input{
+
+    border:none;
+
+    outline:none;
+
+    width:100%;
+
+    background:transparent;
+
+    font-size:.9rem;
+
+}
+
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.ledger-card{
+
+    background:#fff;
+
+    border:1px solid var(--line);
+
+    border-radius:1rem;
+
+    padding:1.5rem 1.75rem;
+
+}
+
+.ledger-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:1rem;
+
+    flex-wrap:wrap;
+
+    margin-bottom:1rem;
+
+}
+
+.ledger-card-header h5{
+
+    margin:0;
+
+    font-weight:600;
+
+}
+
+.count-pill{
+
+    font-family:"JetBrains Mono",monospace;
+
+    font-size:.75rem;
+
+    border:1px solid var(--line);
+
+    background:var(--paper);
+
+    color:var(--slate);
+
+    padding:.2rem .7rem;
+
+    border-radius:999px;
+
+}
+
+
+/* ==========================================================
+   FILTER TABS
+========================================================== */
+
+.filter-tabs{
+
+    display:flex;
+
+    gap:.35rem;
+
+    background:var(--paper);
+
+    padding:.25rem;
+
+    border-radius:.7rem;
+
+}
+
+.filter-tab{
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--slate);
+
+    cursor:pointer;
+
+    padding:.45rem 1rem;
+
+    border-radius:.5rem;
+
+    transition:.25s;
+
+}
+
+.filter-tab.active{
+
+    background:var(--ink);
+
+    color:#fff;
+
+}
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.ledger-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.ledger-table thead th{
+
+    font-family:"JetBrains Mono",monospace;
+
+    font-size:.72rem;
+
+    letter-spacing:.06em;
+
+    text-transform:uppercase;
+
+    color:var(--slate);
+
+    border-bottom:1px solid var(--line);
+
+    padding:.75rem .5rem;
+
+    text-align:left;
+
+}
+
+.ledger-table tbody td{
+
+    padding:.95rem .5rem;
+
+    border-bottom:1px solid var(--paper);
+
+    vertical-align:middle;
+
+}
+
+.ledger-table tbody tr:hover{
+
+    background:var(--paper);
+
+}
+
+.fw-cell{
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.empty-state{
+
+    text-align:center;
+
+    padding:3rem 0;
+
+    color:var(--slate);
+
+}
+
+.empty-state i{
+
+    display:block;
+
+    font-size:2rem;
+
+    color:#d0d0d0;
+
+    margin-bottom:.75rem;
+
+}
+
+
+/* ==========================================================
+   STATUS BADGES
+========================================================== */
+
+.status-badge{
+
+    display:inline-block;
+
+    padding:.35rem .85rem;
+
+    border-radius:999px;
+
+    border:1px solid;
+
+    font-size:.8rem;
+
+    font-weight:500;
+
+}
+
+.pending{
+
+    color:#d97706;
+
+    border-color:#d97706;
+
+    background:#fff;
+
+}
+
+.approved{
+
+    color:#198754;
+
+    border-color:#198754;
+
+    background:#fff;
+
+}
+
+.rejected{
+
+    color:#dc3545;
+
+    border-color:#dc3545;
+
+    background:#fff;
+
+}
+
+.closed{
+
+    color:#6c757d;
+
+    border-color:#6c757d;
+
+    background:#fff;
+
+}
+
+.blacklisted{
+
+    color:#1b2a4a;
+
+    border-color:#1b2a4a;
+
+    background:#fff;
+
+}
+
+
+/* ==========================================================
+   ROLE BADGES
+========================================================== */
+
+.tone-badge{
+
+    font-family:"JetBrains Mono",monospace;
+
+    font-size:.72rem;
+
+    padding:.25rem .65rem;
+
+    border-radius:999px;
+
+    text-transform:capitalize;
+
+}
+
+.tone-emerald{
+
+    background:#e7f3ec;
+
+    color:#198754;
+
+}
+
+.tone-amber{
+
+    background:#fdf1de;
+
+    color:#d97706;
+
+}
+
+.tone-crimson{
+
+    background:#fbe9e5;
+
+    color:#dc3545;
+
+}
+
+.tone-ink{
+
+    background:#eef0f3;
+
+    color:#1b2a4a;
+
+}
+
+.tone-brass{
+
+    background:#f7efdc;
+
+    color:#c89b3c;
+
+}
+
+.tone-slate{
+
+    background:#eef0f3;
+
+    color:#5b6478;
+
+}
+
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.btn-ledger{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:.4rem;
+
+    padding:.45rem 1rem;
+
+    border-radius:10px;
+
+    border:1px solid;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+    text-decoration:none;
+
+    font-size:.82rem;
+
+    font-weight:500;
+
+}
+
+.btn-ledger-outline-emerald{
+
+    color:#198754;
+
+    border-color:#198754;
+
+}
+
+.btn-ledger-outline-emerald:hover{
+
+    background:#198754;
+
+    color:#fff;
+
+}
+
+.btn-ledger-outline-crimson{
+
+    color:#dc3545;
+
+    border-color:#dc3545;
+
+}
+
+.btn-ledger-outline-crimson:hover{
+
+    background:#dc3545;
+
+    color:#fff;
+
+}
+
+.btn-ledger-outline-ink{
+
+    color:#1b2a4a;
+
+    border-color:#1b2a4a;
+
+}
+
+.btn-ledger-outline-ink:hover{
+
+    background:#1b2a4a;
+
+    color:#fff;
+
+}
+
+.btn-ledger-outline-brass{
+
+    color:#c89b3c;
+
+    border-color:#c89b3c;
+
+}
+
+.btn-ledger-outline-brass:hover{
+
+    background:#c89b3c;
+
+    color:#fff;
+
+}
+
+.btn-ledger-solid-emerald{
+
+    background:#198754;
+
+    border-color:#198754;
+
+    color:#fff;
+
+}
+
+.btn-ledger-solid-emerald:hover{
+
+    opacity:.9;
+
+}
+
+.btn-ledger-solid-crimson{
+
+    background:#dc3545;
+
+    border-color:#dc3545;
+
+    color:#fff;
+
+}
+
+.btn-ledger-solid-crimson:hover{
+
+    opacity:.9;
+
+}
+
+
+
+@media(max-width:768px){
+
+    .page-header{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .search-box{
+
+        min-width:100%;
+
+    }
+
+    .ledger-card{
+
+        padding:1rem;
+
+    }
+
+    .ledger-table{
+
+        font-size:.9rem;
+
+    }
+
+}

@@ -167,6 +167,18 @@ export const useAdminStore = defineStore("admin", {
 
         },
 
+        async blacklistStudent(id){
+
+            await adminService.blacklistStudent(id);
+
+        },
+
+        async unblockStudent(id){
+
+            await adminService.unblockStudent(id);
+
+        }
+
     }
 
 });
