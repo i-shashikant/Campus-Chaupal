@@ -75,6 +75,14 @@ export const useCompanyJobsStore = defineStore("companyJob", {
 
         },
 
+        async closeJob(id){
+
+            await companyJobService.closeJob(id);
+
+            await this.loadJobs();
+
+        },
+
         async deleteJob(id) {
 
             await companyJobService.deleteJob(id);
