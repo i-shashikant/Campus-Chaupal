@@ -2,7 +2,7 @@ from extensions import db
 from models import Application, Job, Student
 from datetime import date
 from utils.enums import JobStatus, StudentStatus
-
+from datetime import datetime
 
 from utils.response import (
     success_response,
@@ -203,3 +203,34 @@ class ApplicationService:
             return False, "Graduation year not eligible."
 
         return True, ""
+    
+
+
+    @staticmethod
+    def schedule_interview(application_id, data):
+
+        application = db.session.get(Application, application_id)
+
+        if not application:
+            return error_response("Application not found.", 404)
+
+        application.interview_date = datetime.strptime(
+            data["interview_date"],
+            "%Y-%m-%d"
+        ).date()
+
+        application.interview_time = datetime.strptime(
+            data["interview_time"],
+            "%H:%M"
+        ).time()
+
+        application.interview_mode = data.get("interview_mode")
+        application.interview_link = data.get("interview_link")
+
+        application.status = "Interview Scheduled"
+
+        db.session.commit()
+
+        return success_response(
+            "Interview scheduled successfully."
+        )

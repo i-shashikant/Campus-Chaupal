@@ -39,3 +39,7 @@ class Application(db.Model):
         "Job",
         backref="applications"
     )
+    interview_date = db.Column(db.Date)
+    interview_time = db.Column(db.Time)
+    interview_mode = db.Column(db.String(50))
+    interview_link = db.Column(db.String(255))

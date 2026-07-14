@@ -105,3 +105,13 @@ def upload_logo():
         current_user.id,
         request.files
     )
+
+@company_bp.put("/applications/<int:application_id>/interview")
+@auth_required("token")
+@roles_required("company")
+def schedule_interview(application_id):
+
+    return ApplicationService.schedule_interview(
+        application_id,
+        request.get_json()
+    )
