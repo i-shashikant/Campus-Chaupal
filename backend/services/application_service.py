@@ -63,11 +63,11 @@ class ApplicationService:
                     400
                 )
 
-        if job.eligibility_year and student.year and (
-            student.year != job.eligibility_year
+        if job.eligibility_year and student.graduation_year and (
+            str(student.graduation_year) != str(job.eligibility_year)
         ):
             return error_response(
-                "You are not eligible for this drive based on year.",
+                "You are not eligible for this drive based on graduation year.",
                 400
             )
 
@@ -159,7 +159,7 @@ class ApplicationService:
 
                     app.status,
 
-                "applied_at": str(app.applied_at)
+                "applied_at": app.applied_at.strftime("%d %b %Y")
 
             })
 

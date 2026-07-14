@@ -23,3 +23,13 @@ def get_profile():
 def update_profile():
     data = request.get_json()
     return StudentService.update_profile(current_user.id, data)
+
+@student_bp.post("/resume")
+@auth_required("token")
+@roles_required("student")
+def upload_resume():
+
+    return StudentService.upload_resume(
+        current_user.id,
+        request.files.get("resume")
+    )

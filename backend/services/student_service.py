@@ -2,6 +2,9 @@ from extensions import db
 from models import User, Student
 from utils.response import success_response, error_response
 
+import os
+from werkzeug.utils import secure_filename
+from flask import current_app
 
 class StudentService:
 
@@ -30,7 +33,7 @@ class StudentService:
                 "github": student.github,
                 "linkedin": student.linkedin,
                 "portfolio": student.portfolio,
-                "resume": student.resume
+                "resume": ( f"/static/uploads/resumes/{student.resume}" if student.resume else None)
             }
         )
 
@@ -62,3 +65,35 @@ class StudentService:
         return success_response(
             "Profile updated successfully."
         )
+    
+    @staticmethod
+    def upload_resume(user_id, file):
+
+        student = Student.query.filter_by(user_id=user_id).first()
+
+        if not student:
+            return error_response("Student not found.",404)
+
+        if not file:
+            return error_response("No file uploaded.",400)
+
+        filename = secure_filename(file.filename)
+
+        upload_folder = os.path.join(
+            current_app.root_path,
+            "static",
+            "uploads",
+            "resumes"
+        )
+
+        os.makedirs(upload_folder, exist_ok=True)
+
+        file.save(
+            os.path.join(upload_folder, filename)
+        )
+
+        student.resume = filename
+
+        db.session.commit()
+
+        return success_response("Resume uploaded successfully.")

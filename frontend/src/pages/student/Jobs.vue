@@ -1,4 +1,113 @@
 <template>
+    <div
+    class="modal fade"
+    id="jobModal"
+    tabindex="-1">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+
+                {{ selectedJob?.title }}
+
+                    </h5>
+
+                    <button
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p>
+
+                    <strong>Company</strong><br>
+
+                    {{ selectedJob?.company }}
+
+                    </p>
+
+                    <p>
+
+                    <strong>Location</strong><br>
+
+                    {{ selectedJob?.location }}
+
+                    </p>
+
+                    <p>
+
+                    <strong>Package</strong><br>
+
+                    {{ selectedJob?.salary_package }}
+
+                    </p>
+
+                    <p>
+
+                    <strong>Job Type</strong><br>
+
+                    {{ selectedJob?.job_type }}
+
+                    </p>
+
+                    <p>
+
+                    <strong>Description</strong><br>
+
+                    {{ selectedJob?.description }}
+
+                    </p>
+
+                    <p>
+
+                    <strong>Eligibility CGPA</strong><br>
+
+                    {{ selectedJob?.eligibility_cgpa }}
+
+                    </p>
+
+                    <p>
+
+                    <strong>Deadline</strong><br>
+
+                    {{ selectedJob?.deadline }}
+
+                    </p>
+                    <p>
+
+                    <strong>Deadline</strong><br>
+
+                    {{ selectedJob?.deadline }}
+
+                    </p> 
+
+                </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+
+                Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
     <DashboardLayout>
         <div class="ppa-student">
 
@@ -143,7 +252,7 @@
                         <div class="d-flex justify-content-between align-items-center mt-4">
 
                             <button
-                                class="btn-ledger btn-ledger-outline-ink"
+                                class="btn-ledger btn-ledger-outline-ink" @click="viewJob(job)" data-bs-toggle="modal" data-bs-target="#jobModal"
                             >
 
                                 <i class="bi bi-eye me-2"></i>
@@ -215,6 +324,13 @@ const search = ref("");
 const showFilters = ref(false);
 const jobTypeFilter = ref("");
 const locationFilter = ref("");
+const selectedJob = ref(null);
+
+function viewJob(job){
+
+    selectedJob.value = job;
+
+}
 
 onMounted(() => {
     store.loadJobs();
@@ -252,18 +368,19 @@ const filteredJobs = computed(() => {
 });
 
 const applyJob = async (jobId) => {
+
     applying.value.push(jobId);
 
     const success = await applicationStore.apply(jobId);
 
-    if (success) {
-        const job = store.jobs.find(j => j.id === jobId);
-        if (job) {
-            job.applied = true;
-        }
+    if(success){
+
+        await store.loadJobs();
+
     }
 
     applying.value = applying.value.filter(id => id !== jobId);
+
 };
 </script>
 

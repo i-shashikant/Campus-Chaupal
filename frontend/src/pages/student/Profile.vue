@@ -33,14 +33,6 @@
                             Personal Information
                         </div>
 
-                        <div class="text-center mb-4">
-                            <img :src="photoPreview || avatarUrl" class="avatar-lg mb-3" width="130" height="130" />
-                            <label class="btn-ledger btn-ledger-outline-ink">
-                                Upload Photo
-                                <input type="file" accept="image/*" hidden @change="onPhotoChange">
-                            </label>
-                        </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Full Name</label>
@@ -152,13 +144,36 @@
                         <input type="text" class="form-control" v-model="profileStore.profile.portfolio">
                     </div>
 
-                    <div class="col-12">
-                        <div class="resume-drop">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                            <h6>Resume</h6>
-                            <p v-if="resumeFile" class="resume-name">{{ resumeFile.name }}</p>
-                            <input type="file" accept="application/pdf" class="form-control mt-3" @change="onResumeChange">
-                        </div>
+                    <div class="resume-drop">
+
+                        <i class="bi bi-file-earmark-pdf-fill"></i>
+
+                        <h6>Resume</h6>
+
+                        <p v-if="profileStore.profile.resume">
+                            Resume Uploaded ✅
+                        </p>
+
+                        <p v-else>
+                            Upload your latest resume (PDF)
+                        </p>
+
+                        <input
+                            type="file"
+                            accept=".pdf"
+                            class="form-control mt-3"
+                            @change="uploadResume"
+                        />
+                        <a
+                            v-if="profileStore.profile.resume"
+                            :href="backendURL + profileStore.profile.resume"
+                            target="_blank"
+                            class="btn-ledger btn-ledger-outline-ink mt-3"
+                        >
+                            <i class="bi bi-eye me-2"></i>
+                            View Resume
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -210,6 +225,16 @@ function onPhotoChange(event) {
 
 function onResumeChange(event) {
     resumeFile.value = event.target.files[0] || null;
+}
+
+async function uploadResume(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    await profileStore.uploadResume(file);
+
 }
 </script>
 

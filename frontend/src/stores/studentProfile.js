@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import studentProfileService from "@/services/studentProfileService";
-
+import api from "@/services/api";
 export const useStudentProfileStore = defineStore("studentProfile", {
 
     state: () => ({
@@ -66,6 +66,22 @@ export const useStudentProfileStore = defineStore("studentProfile", {
                 this.loading = false;
 
             }
+
+        },
+
+        async uploadResume(file){
+
+            const formData = new FormData();
+
+            formData.append("resume", file);
+
+            await api.post("/student/resume", formData,{
+                headers:{
+                    "Content-Type":"multipart/form-data"
+                }
+            });
+
+            await this.fetchProfile();
 
         }
 
