@@ -9,7 +9,16 @@
 
             <div class="ledger-card mb-4">
                 <div class="profile-summary">
-                    <img :src="logoPreview || logoUrl" class="logo" width="100" height="100" />
+                    <img
+                        :src="
+                            profileStore.profile.logo
+                                ? BASE_URL + profileStore.profile.logo
+                                : logoUrl
+                        "
+                        class="logo"
+                        width="100"
+                        height="100"
+                    />
                     <div class="flex-grow-1">
                         <h3>{{ profileStore.profile.company_name || "Company Name" }}</h3>
                         <p class="summary-sub">{{ profileStore.profile.industry || "Industry" }}</p>
@@ -74,11 +83,11 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Contact Name</label>
-                                <input class="form-control" v-model="profileStore.profile.contact_person">
+                                <input class="form-control" v-model="profileStore.profile.hr_name">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phone</label>
-                                <input class="form-control" v-model="profileStore.profile.phone">
+                                <input class="form-control" v-model="profileStore.profile.phone" pattern="[0-9]{10}" maxlength="10">
                             </div>
                         </div>
 
@@ -88,15 +97,44 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">LinkedIn URL</label>
-                            <input type="text" class="form-control" v-model="profileStore.profile.linkedin">
+                            <label class="form-label">Address</label>
+                            <textarea
+                                rows="2"
+                                class="form-control"
+                                v-model="profileStore.profile.address">
+                            </textarea>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">City</label>
+                                <input
+                                    class="form-control"
+                                    v-model="profileStore.profile.city">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">State</label>
+                                <input
+                                    class="form-control"
+                                    v-model="profileStore.profile.state">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Country</label>
+                                <input
+                                    class="form-control"
+                                    v-model="profileStore.profile.country">
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="text-end mb-4">
-                <button class="btn-ledger btn-ledger-navy btn-lg" @click="profileStore.updateProfile()">
+                <button class="btn-ledger btn-ledger-navy btn-lg" @click="saveProfile">
                     <i class="bi bi-check-circle me-2"></i>
                     Save Changes
                 </button>
@@ -111,7 +149,7 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useCompanyProfileStore } from "@/stores/companyProfile";
-
+import api, { BASE_URL } from "@/services/api";
 const profileStore = useCompanyProfileStore();
 const logoPreview = ref(null);
 
@@ -124,15 +162,28 @@ const logoUrl = computed(() => {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
 });
 
-function onLogoChange(event) {
+
+async function onLogoChange(event) {
+
     const file = event.target.files[0];
+
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-        logoPreview.value = reader.result;
-    };
-    reader.readAsDataURL(file);
+
+    await profileStore.uploadLogo(file);
+    console.log(profileStore.profile.logo);
+
+    await profileStore.fetchProfile();
+
 }
+
+async function saveProfile() {
+
+    await profileStore.updateProfile(profileStore.profile);
+
+    alert("Profile updated successfully.");
+
+}
+
 </script>
 
 <style scoped>

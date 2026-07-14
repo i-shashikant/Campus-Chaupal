@@ -84,6 +84,8 @@ def get_profile():
     return CompanyService.get_profile(current_user.id)
 
 
+
+
 @company_bp.put("/profile")
 @auth_required("token")
 @roles_required("company")
@@ -91,4 +93,15 @@ def update_profile():
     return CompanyService.update_profile(
         current_user.id,
         request.get_json()
+    )
+
+
+@company_bp.post("/logo")
+@auth_required("token")
+@roles_required("company")
+def upload_logo():
+
+    return CompanyService.upload_logo(
+        current_user.id,
+        request.files
     )

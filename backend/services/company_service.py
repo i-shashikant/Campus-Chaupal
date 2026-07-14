@@ -1,6 +1,8 @@
 from extensions import db, security
 from models import User, Student, Company
-
+import os
+from werkzeug.utils import secure_filename
+from flask import current_app
 from utils.response import success_response, error_response
 
 
@@ -10,6 +12,7 @@ class CompanyService:
     def get_profile(user_id):
 
         company = Company.query.filter_by(user_id=user_id).first()
+        
 
         if not company:
             return error_response("Company not found.", 404)
@@ -33,7 +36,8 @@ class CompanyService:
                 "status": company.status,
                 "verified": company.verified,
                 "profile_completed": company.profile_completed,
-            }
+                "logo": f"/static/uploads/company/{company.logo}"
+            },
         )
 
 
@@ -63,3 +67,54 @@ class CompanyService:
         db.session.commit()
 
         return success_response("Profile updated successfully.")
+    
+    @staticmethod
+    def upload_logo(user_id, files):
+
+        company = Company.query.filter_by(
+            user_id=user_id
+        ).first()
+
+        if not company:
+            return error_response(
+                "Company not found.",
+                404
+            )
+
+        file = files.get("logo")
+
+        if not file:
+            return error_response(
+                "No logo selected.",
+                400
+            )
+
+        filename = secure_filename(file.filename)
+
+        upload_folder = os.path.join(
+            current_app.root_path,
+            "static",
+            "uploads",
+            "company"
+        )
+
+        os.makedirs(upload_folder, exist_ok=True)
+
+        filepath = os.path.join(
+            upload_folder,
+            filename
+        )
+
+        file.save(filepath)
+
+        company.logo = filename
+
+        db.session.commit()
+
+        return success_response(
+            "Logo uploaded successfully.",
+            {
+                "logo":
+                f"/static/uploads/company/{filename}"
+            }
+        )

@@ -34,7 +34,29 @@ export const useCompanyProfileStore = defineStore("companyProfile", {
 
             await this.fetchProfile();
 
+        },
+
+        async uploadLogo(file){
+
+            const form = new FormData();
+
+            form.append("logo", file);
+
+            const res = await api.post(
+                "/company/logo",
+                form,
+                {
+                    headers:{
+                        "Content-Type":
+                        "multipart/form-data"
+                    }
+                }
+            );
+
+            this.profile.logo = res.data.data.logo;
+
         }
+    
 
     }
 
