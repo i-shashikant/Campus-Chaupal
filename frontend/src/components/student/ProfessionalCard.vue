@@ -10,53 +10,38 @@ Professional Profile
 
 </h5>
 
-<p>
+<div class="info-row">
+    <strong>Resume</strong>
 
-Resume
+    <span
+        class="badge bg-success"
+        v-if="student.resume"
+    >
+        Uploaded
+    </span>
 
-<span class="badge bg-success float-end">
+    <span v-else>-</span>
+</div>
 
-Uploaded
+<div class="info-row">
+    <strong>Skills</strong>
+    <span>{{ student.skills || "-" }}</span>
+</div>
 
-</span>
+<div class="info-row">
+    <strong>GitHub</strong>
+    <span>{{ student.github || "-" }}</span>
+</div>
 
-</p>
+<div class="info-row">
+    <strong>LinkedIn</strong>
+    <span>{{ student.linkedin || "-" }}</span>
+</div>
 
-<p>
-
-Projects
-
-<span class="float-end">
-
-{{ student.projects }}
-
-</span>
-
-</p>
-
-<p>
-
-Experience
-
-<span class="float-end">
-
-{{ student.experience }}
-
-</span>
-
-</p>
-
-<p>
-
-Certifications
-
-<span class="float-end">
-
-{{ student.certifications }}
-
-</span>
-
-</p>
+<div class="info-row">
+    <strong>Portfolio</strong>
+    <span>{{ student.portfolio || "-" }}</span>
+</div>
 
 </div>
 

@@ -14,9 +14,6 @@
                 {{ student.full_name }}
             </h5>
 
-            <p class="text-muted mb-3">
-                {{ student.degree }}
-            </p>
 
             <div class="row text-center">
 
@@ -29,10 +26,11 @@
 
                 <div class="col">
                     <h6 class="fw-bold mb-0">
-                        {{ student.skills }}
+                        {{ student.roll_number || "-" }}
                     </h6>
-                    <small class="text-muted">Skills</small>
+                    <small class="text-muted">Roll No.</small>
                 </div>
+                
 
             </div>
 

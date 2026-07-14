@@ -9,7 +9,16 @@
                     <h2 class="hero-title">Welcome back, {{ student.full_name || "Student" }}</h2>
                     <p class="hero-sub">Complete your profile and start applying for your dream placements.</p>
                 </div>
-                <RouterLink to="/student/profile" class="hero-cta">Complete Profile</RouterLink>
+                <RouterLink
+                    to="/student/profile"
+                    class="hero-cta"
+                >
+                    {{
+                        completion < 100
+                            ? "Complete Profile"
+                            : "View Profile"
+                    }}
+                </RouterLink>
             </div>
 
             <div class="row g-4 mb-4">
@@ -72,7 +81,7 @@
                     <div class="opportunity-row" v-for="job in latestJobs" :key="job.id">
                         <div>
                             <h6>{{ job.title }}</h6>
-                            <small>{{ job.company_name }}</small>
+                            <small>{{ job.company }}</small>
                         </div>
                         <RouterLink to="/student/jobs" class="btn-ledger btn-ledger-outline-ink">View</RouterLink>
                     </div>
@@ -102,7 +111,7 @@
 
                 <div v-else class="empty-state">
                     <i class="bi bi-file-earmark-text"></i>
-                    <h5>No Activity Yet</h5>
+                    <h5>Apply to your first placement drive to start tracking your placement journey.</h5>
                     <p>Your placement applications will show up here.</p>
                 </div>
             </div>
@@ -118,6 +127,10 @@ import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useStudentProfileStore } from "@/stores/studentProfile";
 import { useJobStore } from "@/stores/jobs";
 import { useApplicationStore } from "@/stores/application";
+import ProfileCard from "@/components/student/ProfileCard.vue";
+import ProfileCompletionCard from "@/components/student/ProfileCompletionCard.vue";
+import AcademicCard from "@/components/student/AcademicCard.vue";
+import ProfessionalCard from "@/components/student/ProfessionalCard.vue";
 
 const profileStore = useStudentProfileStore();
 const jobStore = useJobStore();
@@ -126,12 +139,16 @@ const applicationStore = useApplicationStore();
 onMounted(async () => {
     await profileStore.loadProfile();
     await jobStore.loadJobs();
-    await applicationStore.loadApplications();
+    await applicationStore.loadStudentApplications();
 });
 
 const student = computed(() => profileStore.profile);
 
-const latestJobs = computed(() => jobStore.jobs.slice(0, 3));
+const latestJobs = computed(() =>
+    jobStore.jobs
+        .filter(j => j.is_active)
+        .slice(0,3)
+);
 
 const recentApplications = computed(() =>
     applicationStore.applications.slice(0, 5)

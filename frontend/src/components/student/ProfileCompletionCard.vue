@@ -8,22 +8,35 @@
             Profile Completion
         </h5>
 
-        <div class="progress my-3" style="height:12px">
+       <div class="progress profile-progress">
 
             <div
                 class="progress-bar"
-                :style="{width: completion+'%'}"
+                role="progressbar"
+                :style="{ width: completion + '%' }"
             >
-                {{ completion }}%
             </div>
 
         </div>
 
-        <small class="text-muted">
+        <div class="completion-text">
 
-            Complete your profile to increase visibility.
+            {{ completion }}% Complete
 
-        </small>
+        </div>
+
+        <p class="text-muted mt-3">
+
+            <span v-if="completion === 100">
+                Your profile is complete. You're ready to apply.
+            </span>
+
+            <span v-else>
+                Complete your profile to increase visibility.
+            </span>
+
+        </p>
+
 
     </div>
 

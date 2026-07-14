@@ -1,4 +1,3 @@
-
 <template>
     <DashboardLayout>
         <div class="ppa-student">
@@ -44,41 +43,113 @@
             <div class="row" v-if="filteredJobs.length">
                 <div class="col-md-6 mb-4" v-for="job in filteredJobs" :key="job.id">
                     <div class="job-card">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4>{{ job.title }}</h4>
-                                <h6>{{ job.company }}</h6>
+                        <div class="d-flex justify-content-between align-items-start">
+
+                            <div class="d-flex">
+
+                                <img
+                                    :src="job.company_logo || '/company.png'"
+                                    class="company-logo"
+                                />
+
+                                <div class="ms-3">
+
+                                    <h4 class="mb-1">
+                                        {{ job.title }}
+                                    </h4>
+
+                                    <h6 class="company-name">
+                                        {{ job.company }}
+                                    </h6>
+
+                                </div>
+
                             </div>
-                            <span class="tone-badge tone-emerald">{{ job.salary_package }}</span>
+
+                            <div class="salary-badge">
+
+                                {{ job.salary_package }}
+
+                            </div>
+
                         </div>
 
-                        <p class="job-desc">{{ job.description }}</p>
+                        
 
-                        <div class="row mt-3">
-                            <div class="col-md-6 mb-2">
+                        <div class="job-info mt-3">
+
+                            <div>
+
                                 <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+
                                 {{ job.location }}
+
                             </div>
-                            <div class="col-md-6 mb-2">
+
+                            <div>
+
                                 <i class="bi bi-briefcase-fill me-2"></i>
+
                                 {{ job.job_type }}
+
                             </div>
-                            <div class="col-md-6 mb-2">
-                                <i class="bi bi-mortarboard-fill me-2"></i>
-                                CGPA : {{ job.eligibility_cgpa }}
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <i class="bi bi-calendar-event me-2"></i>
-                                {{ job.application_deadline }}
-                            </div>
+
+                        </div>
+
+                        <div class="eligibility mt-3">
+
+                            <span class="chip">
+
+                                CGPA {{ job.eligibility_cgpa }}
+
+                            </span>
+
+                            <span
+                                class="chip"
+                                v-if="job.eligibility_branch"
+                            >
+
+                                {{ job.eligibility_branch }}
+
+                            </span>
+
+                            <span
+                                class="chip"
+                                v-if="job.eligibility_year"
+                            >
+
+                                {{ job.eligibility_year }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="deadline mt-3">
+
+                            <i class="bi bi-calendar-event me-2"></i>
+
+                            Apply Before
+
+                            <strong>
+
+                                {{ job.deadline }}
+
+                            </strong>
+
                         </div>
 
                         <hr>
 
-                        <div class="d-flex justify-content-between">
-                            <button class="btn-ledger btn-ledger-outline-ink">
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+
+                            <button
+                                class="btn-ledger btn-ledger-outline-ink"
+                            >
+
                                 <i class="bi bi-eye me-2"></i>
+
                                 View
+
                             </button>
 
                             <button
@@ -87,19 +158,33 @@
                                 :disabled="job.applied || applying.includes(job.id)"
                                 @click="applyJob(job.id)"
                             >
+
                                 <template v-if="applying.includes(job.id)">
+
                                     <span class="spinner-border spinner-border-sm me-2"></span>
+
                                     Applying...
+
                                 </template>
+
                                 <template v-else-if="job.applied">
+
                                     <i class="bi bi-check-circle-fill me-2"></i>
+
                                     Applied
+
                                 </template>
+
                                 <template v-else>
+
                                     <i class="bi bi-send-check me-2"></i>
+
                                     Apply Now
+
                                 </template>
+
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -294,5 +379,103 @@ const applyJob = async (jobId) => {
     margin-bottom: 0.75rem;
     display: block;
     color: var(--line);
+}
+
+.company-logo{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:14px;
+
+    border:1px solid #e5e5e5;
+
+    object-fit:cover;
+
+    flex-shrink:0;
+
+}
+
+.company-name{
+
+    color:#777;
+
+    font-size:.9rem;
+
+    margin:0;
+
+}
+
+.salary-badge{
+
+    background:#e7f3ec;
+
+    color:#198754;
+
+    padding:.5rem 1rem;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    white-space:nowrap;
+
+}
+
+.job-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:.9rem;
+
+}
+
+.eligibility{
+
+    display:flex;
+
+    gap:.5rem;
+
+    flex-wrap:wrap;
+
+}
+
+.chip{
+
+    background:#f5f5f5;
+
+    border:1px solid #ddd;
+
+    border-radius:30px;
+
+    padding:.3rem .8rem;
+
+    font-size:.78rem;
+
+}
+
+.deadline{
+
+    color:#666;
+
+    font-size:.9rem;
+
+}
+
+.job-card{
+
+    transition:.25s;
+
+}
+
+.job-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
 }
 </style>
