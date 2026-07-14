@@ -3,7 +3,7 @@ import authService from "@/services/authService";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: null,
+        user: JSON.parse(localStorage.getItem("user")) || null,
         loading: false,
         error: null,
     }),
@@ -23,6 +23,10 @@ export const useAuthStore = defineStore("auth", {
                 );
 
                 this.user = data.user;
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                );
                 return data;
                 
             } catch (err) {
@@ -38,7 +42,10 @@ export const useAuthStore = defineStore("auth", {
 
         logout() {
             localStorage.removeItem("auth_token");
+            localStorage.removeItem("user");
+
             this.user = null;
+            window.location.href = "/login";
         },
     },
 });

@@ -135,6 +135,10 @@ const routes = [
     {
         path: "/company/jobs/create",
         component: () => import("@/pages/company/CreateJob.vue"),
+        meta: {
+            requiresAuth: true,
+            role: "company"
+        }
     },
     
 
@@ -155,9 +159,13 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-
+    console.log("Navigating:", to.path);
+    
     const token = localStorage.getItem("auth_token");
     const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log(token);
+    console.log(user)
 
     // Protected page but not logged in
     if (to.meta.requiresAuth && !token) {
