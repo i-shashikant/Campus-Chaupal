@@ -3,6 +3,7 @@ from flask_security import auth_required, roles_required, current_user
 
 from services.job_service import JobService
 from services.application_service import ApplicationService
+from services.company_service import CompanyService
 
 
 company_bp = Blueprint(
@@ -72,5 +73,22 @@ def update_application_status(application_id):
     return ApplicationService.update_application_status(
         current_user.company.id,
         application_id,
+        request.get_json()
+    )
+
+
+@company_bp.get("/profile")
+@auth_required("token")
+@roles_required("company")
+def get_profile():
+    return CompanyService.get_profile(current_user.id)
+
+
+@company_bp.put("/profile")
+@auth_required("token")
+@roles_required("company")
+def update_profile():
+    return CompanyService.update_profile(
+        current_user.id,
         request.get_json()
     )

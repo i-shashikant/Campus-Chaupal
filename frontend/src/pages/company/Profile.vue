@@ -96,7 +96,7 @@
             </div>
 
             <div class="text-end mb-4">
-                <button class="btn-ledger btn-ledger-navy btn-lg" @click="profileStore.saveProfile()">
+                <button class="btn-ledger btn-ledger-navy btn-lg" @click="profileStore.updateProfile()">
                     <i class="bi bi-check-circle me-2"></i>
                     Save Changes
                 </button>
@@ -116,7 +116,7 @@ const profileStore = useCompanyProfileStore();
 const logoPreview = ref(null);
 
 onMounted(() => {
-    profileStore.loadProfile();
+    profileStore.fetchProfile();
 });
 
 const logoUrl = computed(() => {

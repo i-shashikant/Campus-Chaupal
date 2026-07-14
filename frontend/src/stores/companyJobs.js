@@ -44,15 +44,16 @@ export const useCompanyJobsStore = defineStore("companyJob", {
 
         },
 
-        async createJob() {
+        async createJob(job) {
 
             this.loading = true;
 
             try {
 
-                await companyJobService.createJob(this.job);
+                await companyJobService.createJob(job);
+                await this.loadJobs();
 
-                alert("Job created successfully.");
+                console.log("Job created successfully.");
 
                 this.job = {
 
