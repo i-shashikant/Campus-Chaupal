@@ -78,7 +78,7 @@
 
             <div
                 class="col-md-6 mb-4"
-                v-for="job in store.jobs"
+                v-for="job in filteredjobs"
                 :key="job.id">
 
                 <div class="card-body">
@@ -248,7 +248,8 @@ import { useJobStore } from "@/stores/jobs";
 import { useApplicationStore } from "@/stores/application";
 
 const applicationStore = useApplicationStore();
-import { ref } from "vue";
+
+import { ref, computed } from "vue";
 
 const applying = ref([]);
 
@@ -285,5 +286,30 @@ const applyJob = async (jobId) => {
     );
 
 };
+
+
+const search = ref("");
+
+const filteredJobs = computed(() => {
+
+    if (!search.value.trim()) {
+
+        return store.jobs;
+
+    }
+
+    const keyword = search.value.toLowerCase();
+
+    return store.jobs.filter(job =>
+
+        job.title.toLowerCase().includes(keyword) ||
+
+        job.company.toLowerCase().includes(keyword) ||
+
+        job.location.toLowerCase().includes(keyword)
+
+    );
+
+});
 
 </script>
