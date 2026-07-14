@@ -4,10 +4,11 @@ from models import Student, Company, Job, Application, User
 from utils.enums import CompanyStatus, StudentStatus, JobStatus
 from utils.response import success_response, error_response
 from extensions import db
-
+from sqlalchemy import func
+from models import Student, Company, Job, Application
 
 class AdminService:
-
+    
     @staticmethod
     def dashboard():
 
@@ -30,11 +31,67 @@ class AdminService:
             "applications": Application.query.count(),
         }
 
+        # Selected Students
+
+        selected = Application.query.filter_by(
+            status="Selected"
+        ).count()
+
+        # Placement Rate
+
+        applications = data["applications"]
+
+        placement_rate = round(
+            (selected / applications) * 100,
+            2
+        ) if applications else 0
+
+        # Most Active Company
+
+        company_stats = (
+            db.session.query(
+                Company.company_name,
+                func.count(Job.id).label("jobs")
+            )
+            .join(Job)
+            .group_by(Company.id)
+            .order_by(func.count(Job.id).desc())
+            .first()
+        )
+
+        most_active_company = (
+            company_stats[0]
+            if company_stats else "N/A"
+        )
+
+        most_active_company_jobs = (
+            company_stats[1]
+            if company_stats else 0
+        )
+
+        # Average CGPA
+
+        average_cgpa = db.session.query(
+            func.avg(Student.cgpa)
+        ).scalar()
+
+        average_cgpa = round(
+            average_cgpa or 0,
+            2
+        )
+
+        # Add new statistics
+
+        data["selected"] = selected
+        data["placement_rate"] = placement_rate
+        data["most_active_company"] = most_active_company
+        data["most_active_company_jobs"] = most_active_company_jobs
+        data["average_cgpa"] = average_cgpa
+
         return success_response(
             "Dashboard fetched successfully.",
             data
         )
-
 
     @staticmethod
     def pending_companies():
