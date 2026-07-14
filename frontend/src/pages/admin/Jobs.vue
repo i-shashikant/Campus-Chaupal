@@ -1,105 +1,3 @@
-<!-- <template>
-
-<DashboardLayout>
-
-<div class="container-fluid">
-
-<h2 class="fw-bold mb-4">
-
-Jobs
-
-</h2>
-
-<div class="card shadow-sm">
-
-<div class="card-body">
-
-<table class="table">
-
-<thead>
-
-<tr>
-
-<th>Title</th>
-
-<th>Company</th>
-
-<th>Location</th>
-
-<th>Deadline</th>
-
-<th>Applications</th>
-
-<th>Status</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr
-v-for="job in admin.jobs"
-:key="job.id"
->
-
-<td>{{ job.title }}</td>
-
-<td>{{ job.company }}</td>
-
-<td>{{ job.location }}</td>
-
-<td>{{ job.deadline }}</td>
-
-<td>{{ job.applications }}</td>
-
-<td>
-
-<span
-class="badge"
-:class="job.active ? 'bg-success' : 'bg-secondary'"
->
-
-{{ job.active ? "Active" : "Closed" }}
-
-</span>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-</DashboardLayout>
-
-</template>
-
-<script setup>
-
-import { onMounted } from "vue";
-
-import DashboardLayout from "@/layouts/DashboardLayout.vue";
-
-import { useAdminStore } from "@/stores/admin";
-
-const admin = useAdminStore();
-
-onMounted(() => {
-
-admin.loadJobs();
-
-});
-
-</script> -->
-
 <template>
     <DashboardLayout>
         <div class="container-fluid ppa-admin">
@@ -150,6 +48,7 @@ admin.loadJobs();
                             <th>Deadline</th>
                             <th>Applications</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -160,9 +59,47 @@ admin.loadJobs();
                             <td>{{ job.deadline }}</td>
                             <td>{{ job.applications }}</td>
                             <td>
-                                <span class="tone-badge" :class="job.active ? 'tone-emerald' : 'tone-slate'">
-                                    {{ job.active ? "Active" : "Closed" }}
+                                <span
+                                    class="status-badge"
+                                    :class="{
+                                        pending: job.status === 'Pending',
+                                        approved: job.status === 'Approved',
+                                        rejected: job.status === 'Rejected',
+                                        closed: job.status === 'Closed'
+                                    }"
+                                >
+                                    {{ job.status }}
                                 </span>
+                            </td>
+                            <td>
+
+                                <template v-if="job.status === 'Pending'">
+
+                                    <button
+                                        class="btn-action btn-approve"
+                                        @click="approve(job.id)"
+                                    >
+                                        <i class="bi bi-check-lg me-1"></i>
+                                        Approve
+                                    </button>
+
+                                    <button
+                                        class="btn-action btn-reject"
+                                        @click="reject(job.id)"
+                                    >
+                                        <i class="bi bi-x-lg me-1"></i>
+                                        Reject
+                                    </button>
+
+                                </template>
+
+                                <span
+                                    v-else
+                                    class="text-muted"
+                                >
+                                    —
+                                </span>
+
                             </td>
                         </tr>
                     </tbody>
@@ -185,30 +122,78 @@ const activeTab = ref("all");
 
 const tabs = [
     { label: "All", value: "all" },
-    { label: "Active", value: "active" },
+    { label: "Pending", value: "pending" },
+    { label: "Approved", value: "approved" },
     { label: "Closed", value: "closed" },
+    { label: "Rejected", value: "rejected" }
 ];
 
-onMounted(() => {
-    admin.loadJobs();
+onMounted(async () => {
+
+    await admin.loadJobs();
+
 });
+
 
 const filteredJobs = computed(() => {
+
+    let jobs = [...admin.jobs];
+
+    switch (activeTab.value) {
+
+        case "pending":
+            jobs = jobs.filter(j => j.status === "Pending");
+            break;
+
+        case "approved":
+            jobs = jobs.filter(j => j.status === "Approved");
+            break;
+
+        case "closed":
+            jobs = jobs.filter(j => j.status === "Closed");
+            break;
+
+        case "rejected":
+            jobs = jobs.filter(j => j.status === "Rejected");
+            break;
+
+        default:
+            break;
+    }
+
     const q = query.value.trim().toLowerCase();
-    return admin.jobs.filter((job) => {
-        const matchesTab =
-            activeTab.value === "all" ||
-            (activeTab.value === "active" && job.active) ||
-            (activeTab.value === "closed" && !job.active);
 
-        if (!matchesTab) return false;
-        if (!q) return true;
+    if (!q)
+        return jobs;
 
-        return [job.title, job.company, job.location]
+    return jobs.filter(job =>
+        [job.title, job.company, job.location]
             .filter(Boolean)
-            .some((field) => field.toLowerCase().includes(q));
-    });
+            .some(field => field.toLowerCase().includes(q))
+    );
+
 });
+
+async function approve(id) {
+
+    await admin.approveJob(id);
+
+    await admin.loadJobs();
+
+}
+
+async function reject(id) {
+
+    const reason = prompt("Reason for rejection");
+
+    if (reason === null) return;
+
+    await admin.rejectJob(id, reason);
+
+    await admin.loadJobs();
+
+}
+
 </script>
 
 <style scoped>
@@ -362,6 +347,112 @@ const filteredJobs = computed(() => {
     border-radius: 1rem;
     text-transform: capitalize;
 }
+
+.status-badge{
+
+    display:inline-block;
+
+    padding:.35rem .8rem;
+
+    border-radius:10px;
+
+    font-size:.8rem;
+
+    border:1px solid;
+
+    font-weight:500;
+
+}
+
+.pending{
+
+    color:#d97706;
+
+    border-color:#d97706;
+
+    background:white;
+
+}
+
+.approved{
+
+    color:#198754;
+
+    border-color:#198754;
+
+    background:white;
+
+}
+
+.rejected{
+
+    color:#dc3545;
+
+    border-color:#dc3545;
+
+    background:white;
+
+}
+
+.closed{
+
+    color:#6c757d;
+
+    border-color:#6c757d;
+
+    background:white;
+
+}
+
+.btn-action{
+
+    background:white;
+
+    border:1px solid;
+
+    border-radius:10px;
+
+    padding:.45rem .9rem;
+
+    transition:.2s;
+
+    margin-right:.4rem;
+
+}
+
+.btn-approve{
+
+    color:#198754;
+
+    border-color:#198754;
+
+}
+
+.btn-approve:hover{
+
+    background:#198754;
+
+    color:white;
+
+}
+
+.btn-reject{
+
+    color:#dc3545;
+
+    border-color:#dc3545;
+
+}
+
+.btn-reject:hover{
+
+    background:#dc3545;
+
+    color:white;
+
+}
+
+
 
 .tone-emerald { background: #e7f3ec; color: var(--emerald); }
 .tone-slate { background: #eef0f3; color: var(--slate); }
