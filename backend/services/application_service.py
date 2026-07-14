@@ -157,7 +157,9 @@ class ApplicationService:
 
                 "status":
 
-                    app.status
+                    app.status,
+
+                "applied_at": str(app.applied_at)
 
             })
 

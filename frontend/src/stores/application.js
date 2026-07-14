@@ -46,6 +46,30 @@ export const useApplicationStore = defineStore("application", {
 
             this.applications = response.data.data;
 
+        },
+
+        async updateStatus(id, status) {
+
+            this.loading = true;
+
+            try {
+
+                await applicationService.updateStatus(id, status);
+
+                const application = this.applications.find(
+                    app => app.id === id
+                );
+
+                if (application) {
+                    application.status = status;
+                }
+
+            } finally {
+
+                this.loading = false;
+
+            }
+
         }
 
     }

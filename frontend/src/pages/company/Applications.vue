@@ -30,6 +30,7 @@
                             <th>Student</th>
                             <th>Job</th>
                             <th>Status</th>
+                            <th>Applied</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,7 @@
                                     <option>Rejected</option>
                                 </select>
                             </td>
+                            <td>{{ app.applied_at }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -90,8 +92,16 @@ function badgeTone(status) {
 }
 
 async function updateStatus(id, status) {
+
+    if (
+        status === "Selected" &&
+        !confirm("Mark this student as Selected?")
+    ) {
+        return;
+    }
+
     await store.updateStatus(id, status);
-    await store.loadCompanyApplications();
+
 }
 </script>
 
