@@ -5,10 +5,12 @@ from utils.response import success_response, error_response
 import os
 from werkzeug.utils import secure_filename
 from flask import current_app
+from extensions import cache
 
 class StudentService:
 
     @staticmethod
+    @cache.memoize(timeout=60)
     def get_profile(user_id):
 
         student = Student.query.filter_by(user_id=user_id).first()
@@ -61,6 +63,7 @@ class StudentService:
         student.portfolio = data.get("portfolio")
 
         db.session.commit()
+        cache.delete_memoized(StudentService.get_profile, user_id)
 
         return success_response(
             "Profile updated successfully."
@@ -95,5 +98,6 @@ class StudentService:
         student.resume = filename
 
         db.session.commit()
+        cache.delete_memoized(StudentService.get_profile, user_id)
 
         return success_response("Resume uploaded successfully.")

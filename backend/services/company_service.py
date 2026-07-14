@@ -4,11 +4,12 @@ import os
 from werkzeug.utils import secure_filename
 from flask import current_app
 from utils.response import success_response, error_response
-
+from extensions import cache
 
 class CompanyService:
 
     @staticmethod
+    @cache.memoize(timeout=60)
     def get_profile(user_id):
 
         company = Company.query.filter_by(user_id=user_id).first()
@@ -65,6 +66,7 @@ class CompanyService:
         company.profile_completed = True
 
         db.session.commit()
+        cache.delete_memoized(CompanyService.get_profile, user_id)
 
         return success_response("Profile updated successfully.")
     
@@ -110,6 +112,7 @@ class CompanyService:
         company.logo = filename
 
         db.session.commit()
+        cache.delete_memoized(CompanyService.get_profile, user_id)
 
         return success_response(
             "Logo uploaded successfully.",

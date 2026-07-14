@@ -6,10 +6,12 @@ from utils.response import success_response, error_response
 from extensions import db
 from sqlalchemy import func
 from models import Student, Company, Job, Application
+from extensions import cache
 
 class AdminService:
     
     @staticmethod
+    @cache.cached(timeout=60)
     def dashboard():
 
         data = {

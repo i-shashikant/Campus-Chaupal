@@ -5,9 +5,12 @@ from models import Job
 from utils.response import success_response, error_response
 from utils.enums import JobStatus
 
+from extensions import cache
+
 class JobService:
 
     @staticmethod
+    @cache.cached(timeout=60)
     def get_all_jobs():
 
         jobs = Job.query.filter_by(is_active=True).all()
@@ -69,12 +72,15 @@ class JobService:
 
         db.session.add(job)
         db.session.commit()
+        cache.delete_memoized(JobService.get_company_jobs, company_id)
+        cache.delete_memoized(JobService.get_all_jobs)
 
         return success_response(
             "Placement drive submitted for admin approval."
         )
 
     @staticmethod
+    @cache.cached(timeout=60)
     def get_company_jobs(company_id):
 
         jobs = Job.query.filter_by(company_id=company_id).all()
@@ -152,6 +158,8 @@ class JobService:
             job.is_active = False
 
         db.session.commit()
+        cache.delete_memoized(JobService.get_company_jobs, company_id)
+        cache.delete_memoized(JobService.get_all_jobs)
 
         return success_response(
             "Job updated successfully. Re-submitted for admin approval."
@@ -174,6 +182,8 @@ class JobService:
 
         db.session.delete(job)
         db.session.commit()
+        cache.delete_memoized(JobService.get_company_jobs, company_id)
+        cache.delete_memoized(JobService.get_all_jobs)
 
         return success_response(
             "Job deleted successfully."
@@ -192,6 +202,14 @@ class JobService:
         job.reason = None
 
         db.session.commit()
+        cache.delete_memoized(
+            JobService.get_company_jobs,
+            job.company_id
+        )
+
+        cache.delete_memoized(
+            JobService.get_all_jobs
+        )
 
         return success_response("Placement drive approved successfully.")
 
@@ -208,6 +226,14 @@ class JobService:
         job.reason = reason
 
         db.session.commit()
+        cache.delete_memoized(
+            JobService.get_company_jobs,
+            job.company_id
+        )
+
+        cache.delete_memoized(
+            JobService.get_all_jobs
+        )
 
         return success_response("Placement drive rejected.")
 
@@ -226,5 +252,7 @@ class JobService:
         job.is_active = False
 
         db.session.commit()
+        cache.delete_memoized(JobService.get_company_jobs, company_id)
+        cache.delete_memoized(JobService.get_all_jobs)
 
         return success_response("Placement drive closed.")
