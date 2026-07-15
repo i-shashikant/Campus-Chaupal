@@ -27,6 +27,19 @@ export const useJobStore = defineStore("job", {
 
             }
 
+        },
+
+        async closeJob(id) {
+
+            await jobService.closeJob(id);
+
+            const job = this.jobs.find(j => j.id === id);
+
+            if (job) {
+                job.status = "Closed";
+                job.is_active = false;
+            }
+
         }
 
     }

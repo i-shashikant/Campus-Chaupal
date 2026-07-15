@@ -70,7 +70,42 @@ export const useApplicationStore = defineStore("application", {
 
             }
 
-        }
+        },
+
+        async scheduleInterview(id, data) {
+
+            this.loading = true;
+
+            try {
+
+                await applicationService.scheduleInterview(id, data);
+
+                const application = this.applications.find(
+                    app => app.id === id
+                );
+
+                if (application) {
+
+                    application.status = "Interview Scheduled";
+
+                    application.interview_date = data.interview_date;
+                    application.interview_time = data.interview_time;
+                    application.interview_mode = data.interview_mode;
+                    application.interview_link = data.interview_link;
+
+                }
+
+            } finally {
+
+                this.loading = false;
+
+            }
+
+        },
+
+        
+
+        
 
     }
 

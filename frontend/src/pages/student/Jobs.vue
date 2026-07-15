@@ -375,7 +375,7 @@ const applyJob = async (jobId) => {
 
     if(success){
 
-        await store.loadJobs();
+        this.jobs = this.jobs.filter(job => job.id !== id);
 
     }
 

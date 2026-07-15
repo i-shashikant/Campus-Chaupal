@@ -1,4 +1,68 @@
 <template>
+    <div
+        class="modal fade"
+        id="interviewModal"
+        tabindex="-1"
+    >
+    <div class="modal-dialog">
+    <div class="modal-content">
+
+    <div class="modal-header">
+    <h5>Schedule Interview</h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <div class="modal-body">
+
+    <label>Date</label>
+    <input
+    type="date"
+    class="form-control mb-3"
+    v-model="interviewDate"
+    />
+
+    <label>Time</label>
+    <input
+    type="time"
+    class="form-control mb-3"
+    v-model="interviewTime"
+    />
+
+    <label>Mode</label>
+    <input
+    class="form-control mb-3"
+    v-model="interviewMode"
+    />
+
+    <label>Meeting Link</label>
+    <input
+    class="form-control"
+    v-model="interviewLink"
+    />
+
+    </div>
+
+    <div class="modal-footer">
+
+    <button
+    class="btn btn-secondary"
+    data-bs-dismiss="modal"
+    >
+    Cancel
+    </button>
+
+    <button
+    class="btn btn-primary"
+    @click="saveInterview"
+    >
+    Save
+    </button>
+
+    </div>
+
+    </div>
+    </div>
+    </div>
     <DashboardLayout>
         <div class="ppa-company">
 
@@ -30,14 +94,17 @@
                             <th>Student</th>
                             <th>Job</th>
                             <th>Status</th>
-                            <th>Applied</th>
+                            <th>Interview</th>
+                            <th>Resume</th>
+                            <th>Applied On</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="app in filteredApplications" :key="app.id">
                             <td class="fw-cell">{{ app.student }}</td>
                             <td>{{ app.job }}</td>
-                            <td>
+                            <td><div class="status-actions">
+
                                 <select
                                     class="status-select"
                                     :class="badgeTone(app.status)"
@@ -46,10 +113,59 @@
                                 >
                                     <option>Applied</option>
                                     <option>Shortlisted</option>
+                                    <option>Interview Scheduled</option>
                                     <option>Selected</option>
                                     <option>Rejected</option>
                                 </select>
+                                
+                                <button
+                                    v-if="app.status === 'Shortlisted'"
+                                    class="btn btn-sm btn-outline-primary"
+                                    @click="scheduleInterview(app)"
+                                > Schedule
+                                </button></div>
+
                             </td>
+                            <td>
+
+                                <template v-if="app.interview_date">
+
+                                    <div><strong>Date -</strong> {{ app.interview_date }}</div>
+
+                                    <div> <strong>Time -</strong>{{ app.interview_time }}</div>
+
+                                    <div><Strong> Mode -</Strong>{{ app.interview_mode }}</div>
+                                    <div><a
+    v-if="app.interview_link"
+    :href="app.interview_link"
+    target="_blank"
+    class="text-decoration-none"
+>
+    Join Meeting
+</a></div>
+
+                                </template>
+
+                                <span v-else>-</span>
+
+                            </td>
+                            <td>
+
+    <a
+        v-if="app.resume"
+        :href="app.resume"
+        target="_blank"
+        class="btn btn-sm btn-outline-success"
+    >
+        <i class="bi bi-file-earmark-pdf me-1"></i>
+        View Resume
+    </a>
+
+    <span v-else class="text-muted">
+        Not Uploaded
+    </span>
+
+</td>
                             <td>{{ app.applied_at }}</td>
                         </tr>
                     </tbody>
@@ -65,9 +181,17 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useApplicationStore } from "@/stores/application";
+import * as bootstrap from "bootstrap";
+
 
 const store = useApplicationStore();
 const query = ref("");
+const selectedApplication = ref(null);
+const interviewDate = ref("");
+const interviewTime = ref("");
+const interviewMode = ref("Google Meet");
+const interviewLink = ref("");
+
 
 onMounted(() => {
     store.loadCompanyApplications();
@@ -103,6 +227,46 @@ async function updateStatus(id, status) {
     await store.updateStatus(id, status);
 
 }
+
+function scheduleInterview(app) {
+
+    selectedApplication.value = app;
+
+    interviewDate.value = "";
+    interviewTime.value = "";
+    interviewMode.value = "Google Meet";
+    interviewLink.value = "";
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("interviewModal")
+    );
+
+    modal.show();
+}
+
+async function saveInterview() {
+
+    await store.scheduleInterview(
+        selectedApplication.value.id,
+        {
+            interview_date: interviewDate.value,
+            interview_time: interviewTime.value,
+            interview_mode: interviewMode.value,
+            interview_link: interviewLink.value
+        }
+    );
+
+    bootstrap.Modal
+        .getInstance(document.getElementById("interviewModal"))
+        .hide();
+
+    store.loadCompanyApplications();
+
+}
+
+
+
+
 </script>
 
 <style scoped>
@@ -187,7 +351,11 @@ async function updateStatus(id, status) {
     background: #fff;
     cursor: pointer;
 }
-
+.status-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .tone-emerald { color: var(--emerald); border-color: var(--emerald); }
 .tone-amber { color: var(--amber); border-color: var(--amber); }
 .tone-crimson { color: var(--crimson); border-color: var(--crimson); }

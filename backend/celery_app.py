@@ -1,6 +1,9 @@
 from celery import Celery
 from app import create_app
 from celery.schedules import crontab
+import tasks.reminders
+import tasks.report_tasks
+
 
 flask_app = create_app()
 
@@ -36,5 +39,3 @@ celery.conf.beat_schedule = {
     },
 }
 
-import tasks.reminders
-import tasks.report_tasks

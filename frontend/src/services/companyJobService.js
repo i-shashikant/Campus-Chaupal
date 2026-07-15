@@ -16,6 +16,10 @@ export default {
 
     deleteJob(id) {
         return api.delete(`/company/jobs/${id}`);
+    },
+    closeJob(id) {
+        return api.put(`/company/jobs/${id}/close`);
     }
 
+    
 };

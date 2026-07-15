@@ -19,6 +19,14 @@ export default {
             `/company/applications/${applicationId}/status`,
             { status }
         );
-    }
+    },
+    async scheduleInterview(id, data) {
+
+        return api.put(
+            `/company/applications/${id}/interview`,
+            data
+        );
+
+    },
 
 };

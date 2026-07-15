@@ -187,6 +187,7 @@ function badgeTone(status) {
     const s = (status || "").toLowerCase();
     if (["selected"].includes(s)) return "tone-emerald";
     if (["shortlisted", "applied"].includes(s)) return "tone-amber";
+    if (s === "interview scheduled") return "tone-info";
     if (["rejected"].includes(s)) return "tone-crimson";
     return "tone-slate";
 }
@@ -374,5 +375,9 @@ function badgeTone(status) {
     margin-bottom: 0.5rem;
     display: block;
     color: var(--line);
+}
+.tone-info {
+    background: #e8f2ff;
+    color: #2563eb;
 }
 </style>

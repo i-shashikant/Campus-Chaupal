@@ -3,7 +3,7 @@ from models import Application, Job, Student
 from datetime import date
 from utils.enums import JobStatus, StudentStatus
 from datetime import datetime
-
+from flask import request
 from utils.response import (
     success_response,
     error_response
@@ -111,7 +111,23 @@ class ApplicationService:
 
                     app.status,
 
-                "applied_at": app.applied_at.strftime("%d %b %Y")
+                "applied_at": app.applied_at.strftime("%d %b %Y"),
+                "interview_date": app.interview_date.strftime("%d %b %Y") if app.interview_date else None,
+
+                "interview_time":
+                    app.interview_time.strftime("%I:%M %p")
+                    if app.interview_time else None,
+
+                "interview_mode":
+                    app.interview_mode,
+
+                "interview_link":
+                    app.interview_link,
+
+               "resume": (
+    f"{request.host_url}static/uploads/resumes/{app.student.resume}"
+    if app.student.resume else None
+),
 
             })
 

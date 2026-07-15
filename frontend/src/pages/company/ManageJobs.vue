@@ -51,11 +51,12 @@
                             <td>{{ job.salary_package }}</td>
                             <td>{{ job.eligibility_cgpa }}</td>
                             <td>{{ job.deadline }}</td>
-                            <td> <span class="badge"
-                                :class="{'bg-warning': job.status === 'Pending',
-                                        'bg-success': job.status === 'Approved',
-                                        'bg-danger': job.status === 'Rejected',
-                                        'bg-secondary': job.status === 'Closed'}"> {{ job.status }}</span></td>
+                            <td> <span
+                                class="status-pill"
+                                :class="statusClass(job.status)"
+                            >
+                                {{ job.status }}
+                            </span></td>
                             <td>
                                 {{ job.applicant_count }}
                             </td>
@@ -66,7 +67,21 @@
                                 <button class="btn-ledger btn-ledger-outline-crimson" @click="removeJob(job.id)">
                                     Delete
                                 </button>
-                                <button v-if="job.status==='Approved'" class="btn-ledger" @click="closeJob(job.id)"> Close</button>
+                                <button
+                                    v-if="job.status !== 'Closed'"
+                                    class="btn-ledger btn-ledger-outline-crimson"
+                                    @click="closeJob(job.id)"
+                                >
+                                    Close
+                                </button>
+
+                                <span
+                                    v-else
+                                    class="status-pill closed"
+                                >
+                                    Closed
+                                </span>
+                                
                             </td>
                         </tr>
                         
@@ -107,12 +122,36 @@ const removeJob = async (id) => {
     }
 };
 
-const closeJob = async(id)=>{
+const closeJob = async (id) => {
+
+    if (!confirm("Close this placement drive?")) {
+        return;
+    }
 
     await store.closeJob(id);
 
-}
+};
+function statusClass(status) {
 
+    switch ((status || "").toLowerCase()) {
+
+        case "approved":
+            return "approved";
+
+        case "pending":
+            return "pending";
+
+        case "rejected":
+            return "rejected";
+
+        case "closed":
+            return "closed";
+
+        default:
+            return "";
+    }
+
+}
 
 </script>
 
@@ -198,7 +237,48 @@ const closeJob = async(id)=>{
     text-decoration: none;
     display: inline-block;
 }
+.status-pill {
 
+    display: inline-block;
+    padding: 5px 14px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: .3px;
+
+}
+
+.status-pill.approved {
+
+    background: #d1fae5;
+    color: #065f46;
+
+}
+
+.status-pill.pending {
+
+    background: #fef3c7;
+    color: #92400e;
+
+}
+
+.status-pill.rejected {
+
+    background: #fee2e2;
+    color: #991b1b;
+
+}
+
+.status-pill.closed {
+
+    background: #e5e7eb;
+    color: #374151;
+
+}
 .btn-ledger-navy { background: var(--ink); color: #fff; margin-left: 0; }
 .btn-ledger-outline-brass { background: transparent; color: var(--brass); border-color: var(--brass); }
 .btn-ledger-outline-crimson { background: transparent; color: var(--crimson); border-color: var(--crimson); }

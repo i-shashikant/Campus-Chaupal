@@ -27,6 +27,7 @@
                             <th>Company</th>
                             <th>Job Role</th>
                             <th>Status</th>
+                            <th>Interview</th>
                             <th>Applied On</th>
                         </tr>
                     </thead>
@@ -38,6 +39,36 @@
                                 <span class="tone-badge" :class="badgeTone(app.status)">
                                     {{ app.status }}
                                 </span>
+                            </td>
+
+                            <td>
+
+                                <template v-if="app.status==='Interview Scheduled'">
+
+                                    <div class="small">
+                                        {{ app.interview_date }}
+                                    </div>
+
+                                    <div class="small">
+                                        {{ app.interview_time }}
+                                    </div>
+
+                                    <div class="small">
+                                        {{ app.interview_mode }}
+                                    </div>
+
+                                    <a
+                                        v-if="app.interview_link"
+                                        :href="app.interview_link"
+                                        target="_blank"
+                                    >
+                                        Join
+                                    </a>
+
+                                </template>
+
+                                <span v-else>-</span>
+
                             </td>
                             <td>{{ app.applied_at }}</td>
                         </tr>
@@ -82,12 +113,19 @@ const filteredApplications = computed(() => {
 function badgeTone(status) {
     const s = (status || "").toLowerCase();
     if (["selected"].includes(s)) return "tone-emerald";
-    if (["shortlisted", "applied"].includes(s)) return "tone-amber";
+    if (
+        [
+            "shortlisted",
+            "applied",
+            "interview scheduled"
+        ].includes(s)
+    ) return "tone-amber";
     if (["rejected"].includes(s)) return "tone-crimson";
     return "tone-slate";
 }
 
 const exportCSV = () => {
+
     const headers = ["Company", "Job Role", "Status", "Applied On"];
 
     const rows = filteredApplications.value.map(app => [
@@ -102,16 +140,29 @@ const exportCSV = () => {
         ...rows.map(row => row.join(","))
     ].join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob(
+        [csvContent],
+        { type: "text/csv;charset=utf-8;" }
+    );
+
     const url = window.URL.createObjectURL(blob);
+
     const link = document.createElement("a");
 
     link.href = url;
-    link.setAttribute("download", "placement_history.csv");
+
+    link.setAttribute(
+        "download",
+        "placement_history.csv"
+    );
+
     document.body.appendChild(link);
+
     link.click();
+
     document.body.removeChild(link);
-};
+
+}
 </script>
 
 <style scoped>

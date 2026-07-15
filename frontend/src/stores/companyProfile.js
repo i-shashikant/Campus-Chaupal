@@ -55,7 +55,8 @@ export const useCompanyProfileStore = defineStore("companyProfile", {
 
             this.profile.logo = res.data.data.logo;
 
-        }
+        },
+        
     
 
     }

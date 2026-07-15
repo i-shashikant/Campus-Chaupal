@@ -75,11 +75,18 @@ export const useCompanyJobsStore = defineStore("companyJob", {
 
         },
 
-        async closeJob(id){
+        async closeJob(id) {
 
             await companyJobService.closeJob(id);
 
-            await this.loadJobs();
+            const job = this.jobs.find(j => j.id === id);
+
+            if (job) {
+
+                job.status = "Closed";
+                job.is_active = false;
+
+            }
 
         },
 
