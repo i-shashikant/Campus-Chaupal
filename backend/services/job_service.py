@@ -10,7 +10,7 @@ from extensions import cache
 class JobService:
 
     @staticmethod
-    @cache.cached(timeout=60)
+    @cache.memoize(timeout=60)
     def get_all_jobs():
 
         jobs = Job.query.filter_by(is_active=True).all()
@@ -80,7 +80,7 @@ class JobService:
         )
 
     @staticmethod
-    @cache.cached(timeout=60)
+    @cache.memoize(timeout=60)
     def get_company_jobs(company_id):
 
         jobs = Job.query.filter_by(company_id=company_id).all()
@@ -245,14 +245,22 @@ class JobService:
             company_id=company_id
         ).first()
 
-        if not job:
-            return error_response("Job not found.", 404)
+        if job is None:
+            return error_response("Placement drive not found.", 404)
 
         job.status = JobStatus.CLOSED.value
         job.is_active = False
 
         db.session.commit()
+
         cache.delete_memoized(JobService.get_company_jobs, company_id)
         cache.delete_memoized(JobService.get_all_jobs)
 
-        return success_response("Placement drive closed.")
+        return success_response(
+            "Placement drive closed.",
+            {
+                "id": job.id,
+                "status": job.status,
+                "is_active": job.is_active
+            }
+    )

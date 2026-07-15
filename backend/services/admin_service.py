@@ -11,7 +11,7 @@ from extensions import cache
 class AdminService:
     
     @staticmethod
-    @cache.cached(timeout=60)
+    @cache.memoize(timeout=60)
     def dashboard():
 
         data = {

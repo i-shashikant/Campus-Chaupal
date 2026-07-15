@@ -51,6 +51,7 @@
                             <td>{{ job.salary_package }}</td>
                             <td>{{ job.eligibility_cgpa }}</td>
                             <td>{{ job.deadline }}</td>
+                            <td>{{ job.status }}</td> 
                             <td> <span
                                 class="status-pill"
                                 :class="statusClass(job.status)"
@@ -124,9 +125,8 @@ const removeJob = async (id) => {
 
 const closeJob = async (id) => {
 
-    if (!confirm("Close this placement drive?")) {
+    if (!confirm("Close this placement drive?"))
         return;
-    }
 
     await store.closeJob(id);
 

@@ -77,24 +77,32 @@ export const useCompanyJobsStore = defineStore("companyJob", {
 
         async closeJob(id) {
 
-            await companyJobService.closeJob(id);
+    const response = await companyJobService.closeJob(id);
 
-            const job = this.jobs.find(j => j.id === id);
+    const updated = response.data.data;
 
-            if (job) {
+    this.jobs = this.jobs.map(job => {
 
-                job.status = "Closed";
-                job.is_active = false;
+        if (job.id === id) {
 
-            }
+            return {
+                ...job,
+                status: updated.status,
+                is_active: updated.is_active
+            };
 
-        },
+        }
 
+        return job;
+
+    });
+
+},
         async deleteJob(id) {
 
             await companyJobService.deleteJob(id);
 
-            this.loadJobs();
+            this.jobs = this.jobs.filter(job => job.id !== id);
 
         }
 

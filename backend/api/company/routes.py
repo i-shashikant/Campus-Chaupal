@@ -54,6 +54,7 @@ def delete_job(job_id):
 @auth_required("token")
 @roles_required("company")
 def close_job(job_id):
+
     return JobService.close_job(
         current_user.company.id,
         job_id
