@@ -67,6 +67,9 @@ export const useCompanyJobsStore = defineStore("companyJob", {
 
                 };
 
+            }  catch (e) {
+
+                return false;
             } finally {
 
                 this.loading = false;

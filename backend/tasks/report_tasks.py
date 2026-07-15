@@ -2,13 +2,13 @@ from datetime import date, timedelta
 from flask import current_app
 from flask_mail import Message
 
-from celery_app import celery
+from celery import shared_task
 from extensions import mail
 from models import Job, Application
 from utils.enums import JobStatus
 
 
-@celery.task(name="tasks.report_tasks.send_monthly_activity_report")
+@shared_task(name="tasks.report_tasks.send_monthly_activity_report")
 def send_monthly_activity_report():
     first_of_this_month = date.today().replace(day=1)
     last_day_prev_month = first_of_this_month - timedelta(days=1)

@@ -69,6 +69,7 @@ class StudentService:
         return success_response(
             "Profile updated successfully."
         )
+        
     
     @staticmethod
     def upload_resume(user_id, file):

@@ -226,15 +226,6 @@ function scrollToForm() {
     formSection.value?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function onPhotoChange(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-        photoPreview.value = reader.result;
-    };
-    reader.readAsDataURL(file);
-}
 
 function onResumeChange(event) {
     resumeFile.value = event.target.files[0] || null;

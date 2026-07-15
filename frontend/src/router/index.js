@@ -30,6 +30,7 @@ const routes = [
         meta: {
         requiresAuth: true,
         role: "admin"
+        
         }
     },
     

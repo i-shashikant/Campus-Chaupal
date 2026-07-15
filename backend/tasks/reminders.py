@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 
-from celery_app import celery
+from celery import shared_task
 from flask_mail import Message
 
 from extensions import mail
@@ -9,7 +9,7 @@ from services.application_service import ApplicationService
 from utils.enums import JobStatus
 
 
-@celery.task
+@shared_task(name="tasks.reminders.daily_reminder")
 def daily_reminder():
 
     tomorrow = date.today() + timedelta(days=1)
