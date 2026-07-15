@@ -115,6 +115,7 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useAdminStore } from "@/stores/admin";
+import toast from "@/utils/toast";
 
 const admin = useAdminStore();
 const query = ref("");
@@ -179,6 +180,7 @@ async function approve(id) {
     await admin.approveJob(id);
 
     await admin.loadJobs();
+    toast.success("Placement drive approved.");
 
 }
 
@@ -191,6 +193,7 @@ async function reject(id) {
     await admin.rejectJob(id, reason);
 
     await admin.loadJobs();
+    toast.warning("Placement drive rejected.");
 
 }
 

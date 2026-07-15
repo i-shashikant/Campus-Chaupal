@@ -195,6 +195,7 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useStudentProfileStore } from "@/stores/studentProfile";
+import toast from "@/utils/toast";
 
 const profileStore = useStudentProfileStore();
 const formSection = ref(null);
@@ -235,6 +236,7 @@ async function uploadResume(e){
     if(!file) return;
 
     await profileStore.uploadResume(file);
+    toast.success("Resume updated successfully.");
 
 }
 

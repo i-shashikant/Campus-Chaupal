@@ -675,6 +675,8 @@ import { computed, onMounted } from "vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useAdminStore } from "@/stores/admin";
 
+import toast from "@/utils/toast";
+
 const admin = useAdminStore();
 
 const hasData = computed(() => {

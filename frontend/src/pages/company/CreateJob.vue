@@ -101,30 +101,33 @@ const job = reactive({
     deadline: ""
 });
 
-async function submit() {
-    await companyStore.createJob(job);
-    
-
-    Object.assign(job, {
-        title: "",
-        description: "",
-        location: "",
-        salary_package: "",
-        job_type: "",
-        eligibility_cgpa: "",
-        deadline: ""
 
 
-    });
-    router.push("/company/jobs");
-}
-
+import toast from "@/utils/toast";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-// router.push("/company/jobs");
+const submit = async () => {
 
+    const success = await companyStore.createJob(job);
+    if(success){
+
+        toast.success("Placement drive created successfully.");
+
+        router.push("/company/jobs");
+
+    }
+
+    if (success) {
+
+        toast.success("Placement drive created successfully!");
+
+        router.push("/company/jobs");
+
+    }
+
+};
 </script>
 
 <style scoped>

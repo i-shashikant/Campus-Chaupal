@@ -91,7 +91,7 @@ import { ref, computed, onMounted } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useApplicationStore } from "@/stores/application";
-
+import toast from "@/utils/toast";
 const store = useApplicationStore();
 const search = ref("");
 

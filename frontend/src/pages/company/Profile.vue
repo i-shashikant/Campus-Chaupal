@@ -150,6 +150,7 @@ import { computed, onMounted, ref } from "vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useCompanyProfileStore } from "@/stores/companyProfile";
 import api, { BASE_URL } from "@/services/api";
+import toast from "@/utils/toast";
 const profileStore = useCompanyProfileStore();
 const logoPreview = ref(null);
 
@@ -173,6 +174,7 @@ async function onLogoChange(event) {
     console.log(profileStore.profile.logo);
 
     await profileStore.fetchProfile();
+    toast.success("Company profile updated.");
 
 }
 
@@ -180,7 +182,7 @@ async function saveProfile() {
 
     await profileStore.updateProfile(profileStore.profile);
 
-    alert("Profile updated successfully.");
+    toast.success("Company profile updated.");
 
 }
 

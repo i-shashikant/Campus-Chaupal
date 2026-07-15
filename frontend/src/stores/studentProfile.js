@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import studentProfileService from "@/services/studentProfileService";
 import api from "@/services/api";
+import toast from "@/utils/toast";
 export const useStudentProfileStore = defineStore("studentProfile", {
 
     state: () => ({
@@ -59,7 +60,7 @@ export const useStudentProfileStore = defineStore("studentProfile", {
                     this.profile
                 );
 
-                alert("Profile updated successfully!");
+                toast.success("Profile updated successfully!");
 
             } finally {
 

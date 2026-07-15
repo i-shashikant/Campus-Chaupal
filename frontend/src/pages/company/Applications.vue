@@ -182,7 +182,7 @@ import { computed, onMounted, ref } from "vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useApplicationStore } from "@/stores/application";
 import * as bootstrap from "bootstrap";
-
+import toast from "@/utils/toast";
 
 const store = useApplicationStore();
 const query = ref("");
@@ -225,6 +225,7 @@ async function updateStatus(id, status) {
     }
 
     await store.updateStatus(id, status);
+    toast.success("Student is Selected!");
 
 }
 
@@ -242,6 +243,7 @@ function scheduleInterview(app) {
     );
 
     modal.show();
+    toast.success("Interview scheduled successfully.");
 }
 
 async function saveInterview() {

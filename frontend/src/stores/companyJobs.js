@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import companyJobService from "@/services/companyJobService";
-
+import toast from "@/utils/toast";
 export const useCompanyJobsStore = defineStore("companyJob", {
 
     state: () => ({
@@ -53,7 +53,7 @@ export const useCompanyJobsStore = defineStore("companyJob", {
                 await companyJobService.createJob(job);
                 await this.loadJobs();
 
-                console.log("Job created successfully.");
+                return true;
 
                 this.job = {
 

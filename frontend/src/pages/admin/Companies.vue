@@ -102,7 +102,7 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useAdminStore } from "@/stores/admin";
-
+import toast from "@/utils/toast";
 const admin = useAdminStore();
 const query = ref("");
 const activeTab = ref("all");
@@ -179,23 +179,28 @@ async function approve(id) {
     await admin.approveCompany(id);
 
     await admin.loadCompanies();
+    toast.success("Company approved.");
 
 }
 
 async function reject(id) {
     if (confirm("Reject this company?")) {
         await admin.rejectCompany(id);
+        toast.warning("Company rejected.");
     }
 }
 
 async function blacklist(id) {
     if (confirm("Blacklist this company? Their active drives will be closed.")) {
         await admin.blacklistCompany(id);
+        toast.warning("Company blacklisted.");
     }
+
 }
 
 async function unblock(id) {
     await admin.unblockCompany(id);
+    toast.success("Company activated.");
 }
 </script>
 

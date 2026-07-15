@@ -98,13 +98,14 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useCompanyJobsStore } from "@/stores/companyJobs";
-
+import toast from "@/utils/toast";
 const store = useCompanyJobsStore();
 const query = ref("");
 
 onMounted(() => {
     store.loadJobs();
 });
+
 
 const filteredJobs = computed(() => {
     const q = query.value.trim().toLowerCase();
@@ -119,6 +120,7 @@ const filteredJobs = computed(() => {
 const removeJob = async (id) => {
     if (confirm("Delete this job?")) {
         await store.deleteJob(id);
+        toast.success("Placement drive deleted.");
     }
 };
 
@@ -128,6 +130,7 @@ const closeJob = async (id) => {
         return;
 
     await store.closeJob(id);
+    toast.info("Placement drive closed.");
 
 };
 function statusClass(status) {

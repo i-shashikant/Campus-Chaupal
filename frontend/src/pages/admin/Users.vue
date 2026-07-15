@@ -96,6 +96,7 @@ import { computed, onMounted, ref } from "vue";
 
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useAdminStore } from "@/stores/admin";
+import toast from "@/utils/toast";
 
 const admin = useAdminStore();
 const query = ref("");
@@ -138,6 +139,7 @@ async function blacklist(id){
     await admin.blacklistStudent(id);
 
     await admin.loadUsers();
+    toast.warning("Student blacklisted.");
 
 }
 
@@ -146,6 +148,7 @@ async function unblock(id){
     await admin.unblockStudent(id);
 
     await admin.loadUsers();
+    toast.warning("Student activated.");
 
 }
 </script>

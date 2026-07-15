@@ -29,6 +29,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter(); 
 import { useAuthStore } from "@/stores/auth";
+import toast from "@/utils/toast";
 
 const authStore = useAuthStore();
 
@@ -76,6 +77,7 @@ const logout = () => {
     }
 
     authStore.logout();
+    toast.info("Logged out successfully.");
 
 };
 </script>

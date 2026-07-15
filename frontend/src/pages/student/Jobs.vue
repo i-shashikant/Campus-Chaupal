@@ -315,6 +315,7 @@ import { onMounted, ref, computed } from "vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { useJobStore } from "@/stores/jobs";
 import { useApplicationStore } from "@/stores/application";
+import toast from "@/utils/toast";
 
 const applicationStore = useApplicationStore();
 const store = useJobStore();
@@ -372,6 +373,7 @@ const applyJob = async (jobId) => {
     applying.value.push(jobId);
 
     const success = await applicationStore.apply(jobId);
+    toast.success("Applied successfully.");
 
     if(success){
 
