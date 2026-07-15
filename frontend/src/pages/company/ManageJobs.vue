@@ -51,9 +51,8 @@
                             <td>{{ job.salary_package }}</td>
                             <td>{{ job.eligibility_cgpa }}</td>
                             <td>{{ job.deadline }}</td>
-                            <td>{{ job.status }}</td> 
                             <td> <span
-                                class="status-pill"
+                                class="tone-badge"
                                 :class="statusClass(job.status)"
                             >
                                 {{ job.status }}
@@ -70,7 +69,7 @@
                                 </button>
                                 <button
                                     v-if="job.status !== 'Closed'"
-                                    class="btn-ledger btn-ledger-outline-crimson"
+                                    class="btn-ledger btn-ledger-outline-slate"
                                     @click="closeJob(job.id)"
                                 >
                                     Close
@@ -136,19 +135,19 @@ function statusClass(status) {
     switch ((status || "").toLowerCase()) {
 
         case "approved":
-            return "approved";
+            return "tone-emerald";
 
         case "pending":
-            return "pending";
-
-        case "rejected":
-            return "rejected";
+            return "tone-amber";
 
         case "closed":
-            return "closed";
+            return "tone-slate";
+
+        case "rejected":
+            return "tone-crimson";
 
         default:
-            return "";
+            return "tone-slate";
     }
 
 }
@@ -266,19 +265,32 @@ function statusClass(status) {
 
 }
 
-.status-pill.rejected {
 
-    background: #fee2e2;
-    color: #991b1b;
 
+
+.tone-badge {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 1rem;
+    text-transform: capitalize;
 }
 
-.status-pill.closed {
+.tone-emerald { background: #e7f3ec; color: var(--emerald); }
+.tone-amber { background: #fdf1de; color: var(--amber); }
+.tone-crimson { background: #fbe9e5; color: var(--crimson); }
+.tone-slate { background: #eef0f3; color: var(--slate); }
 
-    background: #e5e7eb;
-    color: #374151;
-
+.btn-ledger {
+    font-size: 0.85rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid transparent;
+    font-weight: 500;
+    cursor: pointer;
 }
+
+.btn-ledger-emerald { background: var(--emerald); color: #fff; }
 .btn-ledger-navy { background: var(--ink); color: #fff; margin-left: 0; }
 .btn-ledger-outline-brass { background: transparent; color: var(--brass); border-color: var(--brass); }
 .btn-ledger-outline-crimson { background: transparent; color: var(--crimson); border-color: var(--crimson); }

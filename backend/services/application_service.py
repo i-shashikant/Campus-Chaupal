@@ -75,9 +75,23 @@ class ApplicationService:
                     app.status,
 
                 "applied_at":
-                    str(app.applied_at)
+                    str(app.applied_at),
 
-            })
+                "interview_date": (
+                    app.interview_date.strftime("%d %b %Y")
+                    if app.interview_date else None
+                ),
+
+                "interview_time": (
+                    app.interview_time.strftime("%I:%M %p")
+                    if app.interview_time else None
+                ),
+
+                "interview_mode": app.interview_mode,
+                "interview_link": app.interview_link,
+
+                        }),
+                    
 
         return success_response(
             "Applications fetched.",

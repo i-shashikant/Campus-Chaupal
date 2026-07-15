@@ -46,15 +46,15 @@
                                 <template v-if="app.status==='Interview Scheduled'">
 
                                     <div class="small">
-                                        {{ app.interview_date }}
+                                        <strong>Date -</strong>{{ app.interview_date }}
                                     </div>
 
                                     <div class="small">
-                                        {{ app.interview_time }}
+                                        <strong>Time -</strong>{{ app.interview_time }}
                                     </div>
 
                                     <div class="small">
-                                        {{ app.interview_mode }}
+                                        <Strong> Mode -</Strong>{{ app.interview_mode }}
                                     </div>
 
                                     <a
