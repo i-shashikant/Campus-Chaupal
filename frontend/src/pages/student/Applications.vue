@@ -126,13 +126,16 @@ function badgeTone(status) {
 
 const exportCSV = () => {
 
-    const headers = ["Company", "Job Role", "Status", "Applied On"];
+    const headers = ["Company", "Job Role", "Status", "Applied On", "Interview Date", "Interview Time"];
 
     const rows = filteredApplications.value.map(app => [
         app.company,
         app.title,
         app.status,
-        app.applied_at
+        app.applied_at,
+        app.interview_date,
+        app.interview_time,
+
     ]);
 
     const csvContent = [

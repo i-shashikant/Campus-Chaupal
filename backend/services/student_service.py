@@ -24,6 +24,7 @@ class StudentService:
                 "student_code": student.student_code,
                 "full_name": student.full_name,
                 "roll_number": student.roll_number,
+                "email": student.user.email,
                 "branch": student.branch,
                 "year": student.year,
                 "cgpa": student.cgpa,

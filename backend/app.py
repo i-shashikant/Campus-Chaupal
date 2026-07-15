@@ -27,6 +27,7 @@ def create_app():
     security.init_app(app, user_datastore, register_blueprint=False)
 
     with app.app_context():
+        db.create_all()
         from utils.admin_initializer import initialize_admin
         initialize_admin()
 
@@ -55,6 +56,7 @@ def create_app():
 
 
 app = create_app()
+
 
 if __name__ == "__main__":
     app.run(debug=True)

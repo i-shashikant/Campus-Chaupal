@@ -51,7 +51,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phone</label>
-                                <input class="form-control" v-model="profileStore.profile.phone">
+                                <input class="form-control" v-model="profileStore.profile.phone"  maxlength="10", type="tel">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email</label>
@@ -113,7 +113,18 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Graduation Year</label>
-                                <input type="number" class="form-control" v-model="profileStore.profile.graduation_year" />
+                                <select type="number" class="form-control" v-model="profileStore.profile.graduation_year">
+                
+                                    <option value="">Select Year</option>
+                                    <option>2021</option>
+                                    <option>2022</option>
+                                    <option>2023</option>
+                                    <option>2024</option>
+                                    <option>2025</option>
+                                    <option>2026</option>
+                                    <option>2027</option>
+                                    <option>2028</option>
+                                </select>
                             </div>
                         </div>
                     </div>

@@ -72,7 +72,7 @@ export const adminMenu = [
         route: "/admin/companies"
     },
     {
-        title: "Users",
+        title: "Students",
         icon: "bi-people",
         route: "/admin/users"
     },

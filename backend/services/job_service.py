@@ -32,7 +32,8 @@ class JobService:
                 "eligibility_year": job.eligibility_year,
                 "deadline": str(job.deadline) if job.deadline else None,
                 "company": job.company.company_name if job.company else "",
-                "expired": bool(job.deadline and job.deadline < date.today())
+                "expired": bool(job.deadline and job.deadline < date.today()),
+                "logo": f"/static/uploads/company/{job.company.logo}" if job.company.logo else None,
 
             })
 

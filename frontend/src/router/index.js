@@ -162,8 +162,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     console.log("Navigating:", to.path);
     
-    const token = localStorage.getItem("auth_token");
-    const user = JSON.parse(localStorage.getItem("user"));
+    const token = sessionStorage.getItem("auth_token");
+    const user = JSON.parse(sessionStorage.getItem("user"));
 
     console.log(token);
     console.log(user)

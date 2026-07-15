@@ -87,7 +87,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phone</label>
-                                <input class="form-control" v-model="profileStore.profile.phone" pattern="[0-9]{10}" maxlength="10">
+                                <input class="form-control" v-model="profileStore.profile.hr_phone" pattern="[0-9]{10}" maxlength="10" type="tel">
                             </div>
                         </div>
 

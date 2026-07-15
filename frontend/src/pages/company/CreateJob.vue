@@ -44,23 +44,48 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Eligible Branch</label>
-                    <input
-                        class="form-control"
-                        v-model="job.eligibility_branch"
-                        placeholder="CSE"
-                    >
-                </div>
+                <div class="row">
 
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Eligible Year</label>
-                    <input
-                        type="number"
-                        class="form-control"
-                        v-model="job.eligibility_year"
-                        placeholder="2027"
-                    >
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Eligible Branch</label>
+                        <select
+                            class="form-control"
+                            v-model="job.eligibility_branch"
+                            placeholder="CSE"
+                        >
+
+                            <option value="">Select Branch</option>
+                            <option>CSE</option>
+                            <option>IT</option>
+                            <option>ECE</option>
+                            <option>EEE</option>
+                            <option>Mechanical</option>
+                            <option>Civil</option>
+                            <option>Biotechnology</option>
+                        </select>
+
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Eligible Year</label>
+                        <select
+                            type="number"
+                            class="form-control"
+                            v-model="job.eligibility_year"
+                            placeholder="2027"
+                        >
+                            <option value="">Eligibility Year</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="row">

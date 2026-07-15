@@ -3,7 +3,7 @@ import authService from "@/services/authService";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: JSON.parse(localStorage.getItem("user")) || null,
+        user: JSON.parse(sessionStorage.getItem("user")) || null,
         loading: false,
         error: null,
     }),
@@ -17,13 +17,13 @@ export const useAuthStore = defineStore("auth", {
                 const response = await authService.login(credentials);
                 const data = response.data.data;
 
-                localStorage.setItem(
+                sessionStorage.setItem(
                     "auth_token",
                     data.auth_token
                 );
 
                 this.user = data.user;
-                localStorage.setItem(
+                sessionStorage.setItem(
                     "user",
                     JSON.stringify(data.user)
                 );
@@ -41,8 +41,8 @@ export const useAuthStore = defineStore("auth", {
         },
 
         logout() {
-            localStorage.removeItem("auth_token");
-            localStorage.removeItem("user");
+            sessionStorage.removeItem("auth_token");
+            sessionStorage.removeItem("user");
 
             this.user = null;
             window.location.href = "/login";

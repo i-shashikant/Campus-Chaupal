@@ -23,6 +23,7 @@ class CompanyService:
             {
                 "company_code": company.company_code,
                 "company_name": company.company_name,
+                "email": company.user.email,
                 "website": company.website,
                 "location": company.location,
                 "industry": company.industry,
@@ -38,7 +39,9 @@ class CompanyService:
                 "verified": company.verified,
                 "profile_completed": company.profile_completed,
                 "logo": f"/static/uploads/company/{company.logo}"
+                
             },
+            
         )
 
 

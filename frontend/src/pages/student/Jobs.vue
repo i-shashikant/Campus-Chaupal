@@ -80,13 +80,7 @@
                     {{ selectedJob?.deadline }}
 
                     </p>
-                    <p>
-
-                    <strong>Deadline</strong><br>
-
-                    {{ selectedJob?.deadline }}
-
-                    </p> 
+                    
 
                 </div>
 
@@ -157,9 +151,10 @@
                             <div class="d-flex">
 
                                 <img
-                                    :src="job.company_logo || '/company.png'"
-                                    class="company-logo"
-                                />
+    :src="`http://127.0.0.1:5000${job.logo}`"
+    class="company-logo"
+    alt="Company Logo"
+/>
 
                                 <div class="ms-3">
 
@@ -373,11 +368,12 @@ const applyJob = async (jobId) => {
     applying.value.push(jobId);
 
     const success = await applicationStore.apply(jobId);
-    toast.success("Applied successfully.");
 
-    if(success){
+    if (success) {
 
-        this.jobs = this.jobs.filter(job => job.id !== id);
+        toast.success("Applied successfully.");
+
+        await jobStore.loadJobs();   // or whatever your function is called
 
     }
 
