@@ -6,16 +6,18 @@
             <span class="role-badge" :class="roleTone">{{ roleLabel }}</span>
         </div>
 
-        <div class="d-flex align-items-center gap-4">
+        <div class="d-flex align-items-center gap-3">
 
             <button class="bell-btn">
                 <i class="bi bi-bell fs-5"></i>
             </button>
-
-            <div class="d-flex align-items-center gap-2">
-                <img :src="avatarUrl" class="avatar" />
-                <span class="user-name d-none d-md-inline">{{ authStore.user?.name || roleLabel }}</span>
-            </div>
+            <button
+                class="logout-btn"
+                @click="logout"
+                title="Logout"
+            >
+                <i class="bi bi-box-arrow-right fs-5"></i>
+            </button>
 
         </div>
 
@@ -24,6 +26,8 @@
 
 <script setup>
 import { computed } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter(); 
 import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
@@ -64,6 +68,16 @@ const avatarUrl = computed(() => {
     const name = authStore.user?.name || roleLabel.value;
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
 });
+
+const logout = () => {
+
+    if (!confirm("Are you sure you want to logout?")) {
+        return;
+    }
+
+    authStore.logout();
+
+};
 </script>
 
 <style scoped>
@@ -143,5 +157,30 @@ const avatarUrl = computed(() => {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--ink);
+}
+.logout-btn {
+    background: #fbe9e5;
+    border: 1px solid #efc8bf;
+    color: var(--crimson);
+
+    width: 2.4rem;
+    height: 2.4rem;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.logout-btn:hover {
+
+    background: var(--crimson);
+    color: white;
+
 }
 </style>
