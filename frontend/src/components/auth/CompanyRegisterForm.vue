@@ -1,186 +1,26 @@
-<!-- <template>
-
-<form>
-
-    <h5 class="mb-3">Account Information</h5>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Email</label>
-            <input
-                type="email"
-                class="form-control"
-                v-model="registerStore.company.email"
-            />
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Password</label>
-            <input
-                type="password"
-                class="form-control"
-                v-model="registerStore.company.password"
-            />
-        </div>
-    </div>
-
-    <h5 class="mb-3 mt-4">Company Information</h5>
-
-    <div class="row">
-
-        <div class="col-md-6 mb-3">
-
-            <label class="form-label">Company Name</label>
-
-            <input
-                class="form-control"
-                v-model="registerStore.company.company_name"
-            />
-
-        </div>
-
-        <div class="col-md-6 mb-3">
-
-            <label class="form-label">Industry</label>
-
-            <select
-                class="form-select"
-                v-model="registerStore.company.industry"
-            >
-
-                <option value="">Select Industry</option>
-
-                <option>Information Technology</option>
-                <option>Finance</option>
-                <option>Healthcare</option>
-                <option>Education</option>
-                <option>Manufacturing</option>
-                <option>Consulting</option>
-                <option>Telecommunications</option>
-                <option>Retail</option>
-                <option>Other</option>
-
-            </select>
-
-        </div>
-
-    </div>
-
-    <div class="row">
-
-        <div class="col-md-6 mb-3">
-
-            <label class="form-label">Website</label>
-
-            <input
-                type="url"
-                class="form-control"
-                placeholder="https://example.com"
-                v-model="registerStore.company.website"
-            />
-
-        </div>
-
-        <div class="col-md-6 mb-3">
-
-            <label class="form-label">Phone</label>
-
-            <input
-                class="form-control"
-                v-model="registerStore.company.phone"
-            />
-
-        </div>
-
-    </div>
-
-    <h5 class="mb-3 mt-4">HR Contact</h5>
-
-    <div class="row">
-
-        <div class="col-md-6 mb-3">
-
-            <label class="form-label">HR Name</label>
-
-            <input
-                class="form-control"
-                v-model="registerStore.company.hr_name"
-            />
-
-        </div>
-
-        <div class="col-md-6 mb-3">
-
-            <label class="form-label">HR Email</label>
-
-            <input
-                type="email"
-                class="form-control"
-                v-model="registerStore.company.hr_email"
-            />
-
-        </div>
-
-    </div>
-
-    <h5 class="mb-3 mt-4">Company Description</h5>
-
-    <div class="mb-3">
-
-        <textarea
-            rows="4"
-            class="form-control"
-            placeholder="Tell students about your company..."
-            v-model="registerStore.company.description"
-        ></textarea>
-
-    </div>
-    <button class="btn btn-primary w-100 mt-3" type="submit">Register as Company</button>
-    
-
-</form>
-
-</template> -->
-
 <template>
-<form @submit.prevent="submit">
-    <h5 class="mb-3">Account Information</h5>
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Email</label>
-            <input
-                type="email"
-                class="form-control"
-                v-model="registerStore.company.email"
-            />
+    <form @submit.prevent="submit" class="sub-form">
+        <h5 class="section-label">Account Information</h5>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" v-model="registerStore.company.email">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" v-model="registerStore.company.password">
+            </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Password</label>
-            <input
-                type="password"
-                class="form-control"
-                v-model="registerStore.company.password"
-            />
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" v-model="confirmPassword">
         </div>
-    </div>
-    <div class="mb-3">
 
-        <label class="form-label">
-            Confirm Password
-        </label>
-
-        <input
-            type="password"
-            class="form-control"
-            v-model="confirmPassword"
-        />
-
-    </div>
-    <button class="btn btn-primary w-100 mt-3" type="submit">Register as Company</button>
-
-
-</form>
+        <button class="btn-ledger btn-ledger-navy w-100" type="submit">Register as Company</button>
+    </form>
 </template>
 
 <script setup>
@@ -194,34 +34,72 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const registerStore = useRegisterStore();
+
 async function submit() {
 
-    if (
-        registerStore.company.password !==
-        confirmPassword.value
-    ) {
-
+    if (registerStore.company.password !== confirmPassword.value) {
         alert("Passwords do not match.");
         return;
-
     }
 
     try {
-
         await registerStore.registerCompany();
 
-        alert(
-            "Company registered successfully. Waiting for admin approval."
-        );
+        alert("Company registered successfully. Waiting for admin approval.");
 
         router.push("/login");
 
     } catch (err) {
-
         console.error(err);
-
     }
+}
+</script>
 
+<style scoped>
+.sub-form {
+    --ink: #1b2a4a;
+    --slate: #5b6478;
+    --line: #e4e1d8;
+
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 6px;
 }
 
-</script>
+.section-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate);
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    font-size: 0.85rem;
+    color: var(--slate);
+}
+
+.form-control {
+    border-radius: 0.6rem;
+    border: 1px solid var(--line);
+}
+
+.form-control:focus {
+    border-color: #c89b3c;
+    box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.15);
+}
+
+.btn-ledger {
+    height: 48px;
+    border-radius: 0.7rem;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-ledger-navy {
+    background: var(--ink);
+    color: #fff;
+}
+</style>

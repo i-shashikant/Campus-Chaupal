@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Login from '../pages/auth/Login.vue'
 import Register from '../pages/auth/Register.vue'
+import HomeView from "@/views/Home.vue";
 import Jobs from "@/pages/student/Jobs.vue";
 import CompanyDashboard from "@/pages/company/Dashboard.vue";
 import CreateJob from "@/pages/company/CreateJob.vue";
@@ -9,7 +10,7 @@ import CreateJob from "@/pages/company/CreateJob.vue";
 const routes = [
     {
         path: '/',
-        redirect: '/login'
+        component: HomeView
     },
 
     {
