@@ -50,6 +50,10 @@ CampusChaupal digitizes the campus placement process by enabling:
 
 ---
 
+![alt text](image.png)
+
+![alt text](image-1.png)
+
 # Architecture
 
 The project follows a modular layered architecture.
@@ -295,6 +299,8 @@ backend/static/uploads/
 
 # Database Models
 
+![alt text](Untitled.png)
+
 ## User
 
 - id
@@ -356,6 +362,73 @@ backend/static/uploads/
 - interview_mode
 - interview_link
 - applied_at
+
+---
+
+## Project Architecture
+
+                               +-----------------------+
+                               |      Web Browser      |
+                               |  (Student / Company   |
+                               |       / Admin)        |
+                               +----------+------------+
+                                          |
+                                          |
+                                 HTTP Requests (REST)
+                                          |
+                                          ▼
+                         +--------------------------------+
+                         |      Vue 3 Frontend (Vite)     |
+                         |                                |
+                         | • Vue Router                   |
+                         | • Pinia Store                  |
+                         | • Axios                        |
+                         | • Bootstrap 5                 |
+                         +---------------+----------------+
+                                         |
+                                         |
+                                  REST API Calls
+                                         |
+                                         ▼
+                     +--------------------------------------+
+                     |         Flask Backend API            |
+                     |--------------------------------------|
+                     | Blueprints                           |
+                     |  • Authentication                    |
+                     |  • Student                           |
+                     |  • Company                           |
+                     |  • Job                              |
+                     |  • Application                      |
+                     |  • Admin                            |
+                     +---------------+----------------------+
+                                     |
+                                     |
+                           Service Layer (Business Logic)
+                                     |
+                                     ▼
+                     +--------------------------------------+
+                     |        SQLAlchemy ORM                |
+                     +---------------+----------------------+
+                                     |
+                                     |
+                                     ▼
+                           +----------------------+
+                           |    SQLite Database   |
+                           +----------------------+
+
+                     ------------------------------
+                     Background Processing
+                     ------------------------------
+
+               +-------------------+      +----------------+
+               |   Celery Worker   |<---->| Redis/Memurai  |
+               +-------------------+      +----------------+
+                        |
+                        |
+         +--------------+--------------+
+         |                             |
+         ▼                             ▼
+ Daily Reminder Emails        Monthly Activity Report
 
 ---
 
