@@ -255,6 +255,7 @@ class AdminService:
         student.status = StudentStatus.BLACKLISTED.value
 
         db.session.commit()
+        cache.delete_memoized(AdminService.get_users)
 
         return success_response("Student blacklisted successfully.")
 
@@ -266,11 +267,21 @@ class AdminService:
         if not student:
             return error_response("Student not found.", 404)
 
-        student.status = StudentStatus.ACTIVE.value
+        try:
 
-        db.session.commit()
+            student.status = StudentStatus.ACTIVE.value
 
-        return success_response("Student unblocked successfully.")
+            db.session.commit()
+
+            return success_response("Student unblocked successfully.")
+
+        except Exception as e:
+
+            db.session.rollback()
+
+            print("ERROR:", e)
+
+            raise
 
     @staticmethod
     def get_jobs():

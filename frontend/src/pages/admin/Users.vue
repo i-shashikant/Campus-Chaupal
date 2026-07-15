@@ -60,7 +60,7 @@
                                     <button
                                         v-if="user.status !== 'Blacklisted'"
                                         class="btn-ledger btn-ledger-outline-crimson"
-                                        @click="blacklist(user.id)"
+                                        @click="blacklist(user.student_id)"
                                     >
                                         <i class="bi bi-slash-circle me-1"></i>
                                         Blacklist
@@ -69,7 +69,7 @@
                                     <button
                                         v-else
                                         class="btn-ledger btn-ledger-outline-emerald"
-                                        @click="unblock(user.id)"
+                                        @click="unblock(user.student_id)"
                                     >
                                         <i class="bi bi-arrow-clockwise me-1"></i>
                                         Activate

@@ -56,11 +56,17 @@ export const useStudentProfileStore = defineStore("studentProfile", {
 
             try {
 
-                await studentProfileService.updateProfile(
-                    this.profile
-                );
+                await studentProfileService.updateProfile(this.profile);
+
+                await this.loadProfile();
 
                 toast.success("Profile updated successfully!");
+
+                return true;
+
+            } catch (e) {
+
+                return false;
 
             } finally {
 

@@ -191,7 +191,7 @@
             </div>
 
             <div class="text-end mb-4">
-                <button class="btn-ledger btn-ledger-navy btn-lg" @click="profileStore.saveProfile()">
+                <button class="btn-ledger btn-ledger-navy btn-lg" @click="saveProfile()">
                     <i class="bi bi-check-circle me-2"></i>
                     Save Changes
                 </button>
@@ -213,8 +213,8 @@ const formSection = ref(null);
 const photoPreview = ref(null);
 const resumeFile = ref(null);
 
-onMounted(() => {
-    profileStore.loadProfile();
+onMounted(async () => {
+    await profileStore.loadProfile();
 });
 
 const avatarUrl = computed(() => {
@@ -249,6 +249,19 @@ const resumeUrl = computed(() => {
     return "http://127.0.0.1:5000" + profileStore.profile.resume;
 
 });
+
+
+async function saveProfile() {
+
+    const success = await profileStore.saveProfile();
+
+    if (success) {
+
+        router.push("/student/dashboard");
+
+    }
+
+}
 </script>
 
 <style scoped>
